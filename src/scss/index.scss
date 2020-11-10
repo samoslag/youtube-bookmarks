@@ -1,11 +1,18 @@
 @font-face {
   font-family: "Inter";
-  src: url("../assets/font/Inter-Medium.woff2") format("woff2");
+  src: url("../assets/font/Inter-Regular.woff2") format("woff2");
   font-weight: 400;
+}
+
+@font-face {
+  font-family: "Inter";
+  src: url("../assets/font/Inter-Medium.woff2") format("woff2");
+  font-weight: 500;
 }
 
 * {
   font-family: "Inter", sans-serif;
+  outline: none;
 }
 
 body {

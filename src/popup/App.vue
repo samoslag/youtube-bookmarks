@@ -1,14 +1,19 @@
 <template>
   <main>
       <Search v-if="bookmarks.length > 0" v-model="filter"/>
-      <div v-if="bookmarks.length > 0" class="bookmarks">
+      <div v-if="list.length > 0" class="bookmarks">
           <Bookmark
-              v-for="item in list"
+              v-for="(item, index) in list"
               :key="'bookmark-' + item.id"
               :data="item"
+              :active="active && active.youtubeId === item.youtubeId"
+              @open="active ? scrollToItem(index) : false"
           />
       </div>
-      <EmptyNotice v-if="loaded && (!bookmarks || bookmarks.length <= 0)"/>
+    <EmptyNotice
+        v-if="loaded && ((!bookmarks || bookmarks.length <= 0) || (list.length <= 0 && filter))"
+        :text="filter ? 'Search couldn\'t find any matching bookmarks.' : 'Your YouTube bookmarks list is empty.'"
+    />
   </main>
 </template>
 
@@ -17,12 +22,13 @@ import Search from "./components/Search"
 import Bookmark from "./components/Bookmark"
 import EmptyNotice from "./components/EmptyNotice"
 export default {
-  components: { Search, Bookmark, EmptyNotice },
-  data () {
+    components: { Search, Bookmark, EmptyNotice },
+    data () {
         return {
             filter: "",
             loaded: false,
-            bookmarks: []
+            bookmarks: [],
+            active: null
         }
     },
     computed: {
@@ -58,6 +64,7 @@ export default {
         }
     },
     created () {
+        this.getActiveTab()
         this.getBookmarks()
     },
     methods: {
@@ -89,9 +96,9 @@ export default {
             } catch {}
             return []
         },
-        isYoutube (bookmark) {
-            const url = bookmark.url
-            if (bookmark.title && url) {
+        isYoutube (data) {
+            const url = data.url
+            if (data.title && url) {
                 let regExp = /^(?:https?:\/\/)?(?:m\.|www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})(?:\S+)?$/
                 if (url.match(regExp)) {
                     return true
@@ -99,8 +106,8 @@ export default {
             }
             return false
         },
-        getYoutubeId(bookmark) {
-            let url = bookmark.url
+        getYoutubeId(data) {
+            let url = data.url
             let id = ""
             url = url.replace(/(>|<)/gi,'').split(/(vi\/|v=|\/v\/|youtu\.be\/|\/embed\/)/)
             if (url[2] !== undefined) {
@@ -110,9 +117,26 @@ export default {
 
             return id
         },
-        cleanTitle (bookmark) {
-            let title = bookmark.title
+        cleanTitle (data) {
+            let title = data.title
             return title.split(" - YouTube")[0]
+        },
+        getActiveTab () {
+            // eslint-disable-next-line no-undef
+            chrome.tabs.query({ currentWindow: true, active: true }, (tabs) => {
+                const activeTab = tabs[0]
+                if (this.isYoutube(activeTab)) {
+                    this.active = {
+                        title: this.cleanTitle(activeTab),
+                        youtubeId: this.getYoutubeId(activeTab)
+                    }
+                }
+            })
+        },
+        scrollToItem (index) {
+            const itemHeight = 66
+            const offset = index * itemHeight
+            window.scroll({ top: offset, left: 0, behavior: "smooth" });
         }
     }
 }

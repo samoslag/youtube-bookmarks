@@ -21,6 +21,7 @@
   "author": "Samo Šlag",
   "permissions": [
     "bookmarks",
+    "tabs",
     "<all_urls>",
     "*://*/*"
   ]

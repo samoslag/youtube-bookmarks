@@ -1,33 +1,44 @@
 <template>
-  <a
-      :href="data.url"
+    <a
+      :href="active && data.url ? data.url : ''"
       class="bookmark"
-      @click="openUrl(data.url)"
+      :class="{'bookmark--active': active}"
+      @click="open(data.url)"
       :title="data.title"
-  >
-      <div
-          :style="'background-image: url(' + 'https://img.youtube.com/vi/' + data.youtubeId + '/default.jpg' + ')'"
-          class="bookmark__background-image"
-      />
-      <div class="bookmark__content">
-          <div class="bookmark__image-container">
-              <img
-                  :src="'https://img.youtube.com/vi/' + data.youtubeId + '/default.jpg'"
-                  class="bookmark__image"
-              />
-          </div>
-          <div class="bookmark__title">{{ data.title }}</div>
-      </div>
-  </a>
+    >
+        <div
+            :style="'background-image: url(' + 'https://img.youtube.com/vi/' + data.youtubeId + '/default.jpg' + ')'"
+            class="bookmark__background-image"
+        />
+        <div class="bookmark__content">
+            <div class="bookmark__image-container">
+                <img
+                    :src="'https://img.youtube.com/vi/' + data.youtubeId + '/default.jpg'"
+                    class="bookmark__image"
+                />
+                <Icon
+                    v-if="active"
+                    icon="play"
+                    class="bookmark__play-icon"
+                />
+            </div>
+            <div class="bookmark__title">{{ data.title }}</div>
+        </div>
+    </a>
 </template>
 
 <script>
+import Icon from "./Icon"
 export default {
-  props: {
-        data: { type: Object, default: () => {} }
+    components: { Icon },
+    props: {
+        data: { type: Object, default: () => {} },
+        active: { type: Boolean, default: false }
     },
     methods: {
-        openUrl (url) {
+        open (url) {
+            this.$emit("open")
+            if (this.active) return
             if (url) {
                 // eslint-disable-next-line no-undef
                 chrome.tabs.update({ active: true, url })
@@ -64,10 +75,18 @@ export default {
             flex-flow: row nowrap;
             justify-content: center;
             align-items: center;
+            position: relative;
             .bookmark__image {
                 width: 100px;
                 height: 56px;
                 object-fit: cover;
+            }
+            .bookmark__play-icon {
+                width: 14px;
+                position: absolute;
+                z-index: 1;
+                color: rgba(white, 0.75);
+                filter: drop-shadow(0px 1px 2px rgba(black, 0.5));
             }
         }
         .bookmark__title {
@@ -78,6 +97,7 @@ export default {
             transition: all 0.18s;
             max-height: 50px;
             overflow: hidden;
+            font-weight: 500;
         }
     }
     .bookmark__background-image {
@@ -108,7 +128,6 @@ export default {
     &:hover,
     &:active {
         .bookmark__title {
-
             color: white;
         }
     }
@@ -119,6 +138,21 @@ export default {
 
     &:active {
         background-color: #484b4e;
+    }
+    &--active {
+        position: sticky;
+        top: 36px;
+        bottom: 0;
+        z-index: 3;
+        background: #353639;
+        .bookmark__content {
+            .bookmark__title {
+                color: white;
+            }
+        }
+        .bookmark__background-image {
+            opacity: 0.2;
+        }
     }
 }
 </style>
