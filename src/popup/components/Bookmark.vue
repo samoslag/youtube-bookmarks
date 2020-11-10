@@ -122,21 +122,17 @@ export default {
             background: linear-gradient(90deg, rgba(#414245, 0), #414245 50%);
         }
     }
-    &:hover {
-        background-color: #414245;
-    }
-
     &:hover,
-    &:active {
+    &:active,
+    &:focus {
+        background-color: #414245;
+        .bookmark__background-image {
+            opacity: 0.2;
+        }
         .bookmark__title {
             color: white;
         }
     }
-
-    &:hover .bookmark__background-image {
-        opacity: 0.2;
-    }
-
     &:active {
         background-color: #484b4e;
     }
