@@ -1,7 +1,17 @@
-# youtube-bookmarks
+# YouTube Bookmarks Chrome Extension
+Awesome visualization of your YouTube bookmarks.
 
-## Run with hot build
+## Installation
+```
+npm install
+```
+
+## Run
 ```
 yarn watch
 ```
 
+## Build
+```
+yarn build
+```
