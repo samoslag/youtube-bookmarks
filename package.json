@@ -13,6 +13,8 @@
   },
   "dependencies": {
     "core-js": "^3.6.5",
+    "sass": "^1.29.0",
+    "sass-loader": "^10.0.5",
     "vue": "^2.6.11",
     "vue-cli-plugin-browser-extension": "^0.25.1",
     "watch": "^1.0.2"

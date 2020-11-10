@@ -1,0 +1,28 @@
+{
+  "manifest_version": 2,
+  "name": "YouTube Bookmarks",
+  "description": "Awesome visualization of your YouTube bookmarks.",
+  "version": "0.1.0",
+  "icons": {
+    "16": "icons/16.png",
+    "19": "icons/19.png",
+    "38": "icons/38.png",
+    "48": "icons/48.png",
+    "128": "icons/128.png"
+  },
+  "browser_action": {
+    "default_icon": {
+      "19": "icons/19.png",
+      "38": "icons/38.png"
+    },
+    "default_popup": "popup.html",
+    "default_title": "YouTube Bookmarks"
+  },
+  "author": "Samo Šlag",
+  "permissions": [
+    "bookmarks",
+    "<all_urls>",
+    "*://*/*"
+  ],
+  "content_security_policy": "script-src 'self' ; object-src 'self'"
+}

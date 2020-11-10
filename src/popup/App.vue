@@ -1,23 +1,132 @@
 <template>
-  <div id="app">
-    adsadasssadas
-  </div>
+  <main>
+      <Search v-if="bookmarks.length > 0" v-model="filter"/>
+      <div v-if="bookmarks.length > 0" class="bookmarks">
+          <Bookmark
+              v-for="item in list"
+              :key="'bookmark-' + item.id"
+              :data="item"
+          />
+      </div>
+      <EmptyNotice v-if="loaded && (!bookmarks || bookmarks.length <= 0)"/>
+  </main>
 </template>
 
 <script>
-
+import Search from "./components/Search"
+import Bookmark from "./components/Bookmark"
+import EmptyNotice from "./components/EmptyNotice"
 export default {
-  name: 'App',
+  components: { Search, Bookmark, EmptyNotice },
+  data () {
+        return {
+            filter: "",
+            loaded: false,
+            bookmarks: []
+        }
+    },
+    computed: {
+        list () {
+            if (!this.filter) {
+                return this.bookmarks
+            } else {
+                let filter = this.filter.toLowerCase().trim().split(" ")
+                let list = this.bookmarks.filter((item) => {
+                    let title = item.title.toLowerCase().trim().split(" ")
+                    let fullMatch = true
+                    
+                    for (let i = 0; i < filter.length; i++) {
+                        let match = false
+                        for (let j = 0; j < title.length; j++) {
+                            if (title[j].indexOf(filter[i]) > -1) {
+                                match = true
+                                title.splice(j, 1)
+                                break
+                            }
+                        }
+                        if (!match) {
+                            fullMatch = false
+                            break
+                        }
+                    }
+                    
+                    if (fullMatch) return item
+                })
+
+                return list
+            }
+        }
+    },
+    created () {
+        this.getBookmarks()
+    },
+    methods: {
+        getBookmarks () {
+            // eslint-disable-next-line no-undef
+            chrome.bookmarks.getTree((bookmarks) => {
+                this.bookmarks = this.getYoutubeBookmarks(bookmarks)
+                this.loaded = true
+            })
+        },
+        getYoutubeBookmarks (bookmarks) {
+            try {
+                const data = [ ...bookmarks ]
+                const all = data.filter(item => item.id === "0")[0].children
+                const folders = all.filter(item => item.title.toLowerCase() === "bookmarks bar")[0].children
+                const ytBookmarks = folders.filter(item => item.title.toLowerCase() === "youtube")[0].children
+                let output = []
+                for (let i = 0; i < ytBookmarks.length; i++) {
+                    let item = { ...ytBookmarks[i] }
+                    if (this.isYoutube(item)) {
+                        item.youtubeId = this.getYoutubeId(item)
+                        item.title = this.cleanTitle(item)
+                        output.push(item)
+                    }
+
+                }
+                return output
+            // eslint-disable-next-line no-empty
+            } catch {}
+            return []
+        },
+        isYoutube (bookmark) {
+            const url = bookmark.url
+            if (bookmark.title && url) {
+                let regExp = /^(?:https?:\/\/)?(?:m\.|www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})(?:\S+)?$/
+                if (url.match(regExp)) {
+                    return true
+                }
+            }
+            return false
+        },
+        getYoutubeId(bookmark) {
+            let url = bookmark.url
+            let id = ""
+            url = url.replace(/(>|<)/gi,'').split(/(vi\/|v=|\/v\/|youtu\.be\/|\/embed\/)/)
+            if (url[2] !== undefined) {
+                id = url[2].split(/[^0-9a-z_-]/i)
+                id = id[0]
+            } else { id = url }
+
+            return id
+        },
+        cleanTitle (bookmark) {
+            let title = bookmark.title
+            return title.split(" - YouTube")[0]
+        }
+    }
 }
 </script>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+<style lang="scss">
+@import url("../scss/index.scss");
+
+.bookmarks {
+    width: 100%;
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: flex-start;
+    align-items: flex-start;
+    padding: 5px 0;
 }
 </style>
