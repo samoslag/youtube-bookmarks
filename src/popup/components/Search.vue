@@ -49,13 +49,14 @@ components: { Icon },
     .search__icon {
         position: absolute;
         padding: 5px;
-        right: 5px;
+        left: 5px;
         background: transparent;
         border: none;
         color: rgba(white, 0.25);
         display: flex;
         justify-content: center;
         align-items: center;
+        pointer-events: none;
         animation: search-icon 0.15s;
         @keyframes search-icon {
             from {
@@ -64,9 +65,10 @@ components: { Icon },
             }
         }
         svg {
-            width: 14px;
+            width: 13px;
         }
         &.search__clear {
+            pointer-events: initial;
             cursor: pointer;
             color: #ff3333;
             transition: all 0.18s;
@@ -85,7 +87,7 @@ components: { Icon },
     .search__input {
         width: 100%;
         height: 35px;
-        padding: 0 30px 0 10px;
+        padding: 0 10px 0 30px;
         margin: 0;
         border: 0;
         background: transparent;
@@ -94,7 +96,7 @@ components: { Icon },
         font-size: 13px;
         line-height: 16px;
         font-weight: 500;
-        padding-bottom: 1px;
+        padding-bottom: 2px;
         &::placeholder {
             color: rgba(white, 0.4);
             font-weight: 400;
