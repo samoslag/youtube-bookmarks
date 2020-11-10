@@ -1,6 +1,6 @@
 <template>
     <a
-      :href="active && data.url ? data.url : ''"
+      :href="!active && data.url ? data.url : null"
       class="bookmark"
       :class="{'bookmark--active': active}"
       @click="open(data.url)"
@@ -98,6 +98,7 @@ export default {
             max-height: 50px;
             overflow: hidden;
             font-weight: 500;
+            user-select: none;
         }
     }
     .bookmark__background-image {
@@ -145,6 +146,7 @@ export default {
         bottom: 0;
         z-index: 3;
         background: #353639;
+        cursor: pointer;
         .bookmark__content {
             .bookmark__title {
                 color: white;
