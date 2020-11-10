@@ -8,7 +8,9 @@ module.exports = {
   },
   pluginOptions: {
     browserExtension: {
-      // options...
+      components: {
+        popup: true
+      }
     },
   },
 };
