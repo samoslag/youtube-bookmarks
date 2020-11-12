@@ -1,5 +1,8 @@
 <template>
-  <div class="music-animation">
+  <div
+    class="music-animation"
+    :class="{'music-animation--hidden': !show}"
+  >
     <div
       v-for="i in 4"
       :key="i"
@@ -7,6 +10,14 @@
     />
   </div>
 </template>
+
+<script>
+export default {
+  props: {
+    show: { type: Boolean, default: false }
+  }
+}
+</script>
 
 <style lang="scss">
 .music-animation {
@@ -16,6 +27,7 @@
   align-items: flex-end;
   width: 20px;
   height: 20px;
+  transition: opacity 0.2s;
   .music-animation__bar {
     width: calc(25% - 2px);
     height: 3px;
@@ -43,6 +55,9 @@
     &:nth-child(4) {
       animation-delay: 0.675s;
     }
+  }
+  &--hidden {
+    opacity: 0;
   }
 }
 </style>

@@ -18,6 +18,7 @@
                 />
                 <Animation
                     v-if="active"
+                    :show="playing"
                     class="bookmark__play-animation"
                 />
             </div>
@@ -32,7 +33,8 @@ export default {
     components: { Animation },
     props: {
         data: { type: Object, default: () => {} },
-        active: { type: Boolean, default: false }
+        active: { type: Boolean, default: false },
+        playing: { type: Boolean, default: false }
     },
     methods: {
         open (url) {
@@ -57,6 +59,7 @@ export default {
     position: relative;
     animation: bookmark 0.25s;
     overflow: hidden;
+    background-color: #292a2d;
     @keyframes bookmark {
         from { opacity: 0; }
         to { opacity: 1; }
@@ -139,6 +142,7 @@ export default {
         z-index: 3;
         background: #353639;
         cursor: pointer;
+        animation: none;
         .bookmark__content {
             .bookmark__title {
                 color: white;

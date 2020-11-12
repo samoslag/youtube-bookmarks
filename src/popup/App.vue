@@ -6,8 +6,9 @@
               v-for="(item, index) in list"
               :key="'bookmark-' + item.id"
               :data="item"
-              :active="active && active.youtubeId === item.youtubeId"
-              @open="active ? scrollToItem(index) : false"
+              :active="activeTab && activeTab.youtubeId === item.youtubeId"
+              :playing="activeTab && activeTab.playing"
+              @open="activeTab ? scrollToItem(index) : false"
           />
       </div>
     <EmptyNotice
@@ -28,7 +29,7 @@ export default {
             filter: "",
             loaded: false,
             bookmarks: [],
-            active: null
+            activeTab: null
         }
     },
     computed: {
@@ -126,9 +127,10 @@ export default {
             chrome.tabs.query({ currentWindow: true, active: true }, (tabs) => {
                 const activeTab = tabs[0]
                 if (this.isYoutube(activeTab)) {
-                    this.active = {
+                    this.activeTab = {
                         title: this.cleanTitle(activeTab),
-                        youtubeId: this.getYoutubeId(activeTab)
+                        youtubeId: this.getYoutubeId(activeTab),
+                        playing: activeTab.audible
                     }
                 }
             })
