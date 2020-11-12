@@ -67,6 +67,9 @@ export default {
     created () {
         this.getActiveTab()
         this.getBookmarks()
+
+        // eslint-disable-next-line no-undef
+        chrome.tabs.onUpdated.addListener(() => { this.getActiveTab() })
     },
     methods: {
         getBookmarks () {
