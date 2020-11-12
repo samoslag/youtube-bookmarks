@@ -16,10 +16,9 @@
                     :src="'https://img.youtube.com/vi/' + data.youtubeId + '/default.jpg'"
                     class="bookmark__image"
                 />
-                <Icon
+                <Animation
                     v-if="active"
-                    icon="play"
-                    class="bookmark__play-icon"
+                    class="bookmark__play-animation"
                 />
             </div>
             <div class="bookmark__title">{{ data.title }}</div>
@@ -28,9 +27,9 @@
 </template>
 
 <script>
-import Icon from "./Icon"
+import Animation from "./Animation"
 export default {
-    components: { Icon },
+    components: { Animation },
     props: {
         data: { type: Object, default: () => {} },
         active: { type: Boolean, default: false }
@@ -81,12 +80,9 @@ export default {
                 height: 56px;
                 object-fit: cover;
             }
-            .bookmark__play-icon {
-                width: 14px;
+            .bookmark__play-animation {
                 position: absolute;
                 z-index: 1;
-                color: rgba(white, 0.75);
-                filter: drop-shadow(0px 1px 2px rgba(black, 0.5));
             }
         }
         .bookmark__title {
