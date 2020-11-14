@@ -12,8 +12,8 @@
         />
         <div class="bookmark__content">
             <div class="bookmark__image-container">
-                <img
-                    :src="'https://img.youtube.com/vi/' + data.youtubeId + '/default.jpg'"
+                <div
+                    :style="'background-image: url(' + 'https://img.youtube.com/vi/' + data.youtubeId + '/default.jpg' + ')'"
                     class="bookmark__image"
                 />
                 <Animation
@@ -78,10 +78,16 @@ export default {
             justify-content: center;
             align-items: center;
             position: relative;
+            width: 100px;
+            min-width: 100px;
+            height: 56px;
             .bookmark__image {
-                width: 100px;
-                height: 56px;
-                object-fit: cover;
+                width: 100%;
+                height: 100%;
+                background-position: center;
+                background-repeat: no-repeat;
+                background-size: cover;
+                transition: all 0.18s;
             }
             .bookmark__play-animation {
                 position: absolute;

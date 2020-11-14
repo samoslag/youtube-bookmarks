@@ -3,8 +3,7 @@
     <button
         class="search__icon"
         :class="{'search__clear': value}"
-        :key="value ? 'search-icon' : 'search-clear'"
-        @click="value ? $emit('input', '') : false"
+        @click="clear()"
     >
         <Icon :icon="value ? 'times' : 'search'"/>
     </button>
@@ -19,7 +18,7 @@
 </template>
 
 <script>
-import Icon from "./Icon"
+import Icon from "./../../components/Icon"
 export default {
 components: { Icon },
   model: {
@@ -30,7 +29,18 @@ components: { Icon },
         value: { type: String, default: "" }
     },
     mounted () {
-        this.$refs.input.focus()
+        this.focusInput()
+    },
+    methods: {
+        focusInput () {
+            this.$refs.input.focus()
+        },
+        clear () {
+            if (this.value) {
+                this.$emit("input", "")
+                this.focusInput()
+            }
+        }
     }
 }
 </script>
@@ -57,30 +67,47 @@ components: { Icon },
         justify-content: center;
         align-items: center;
         pointer-events: none;
-        animation: search-icon 0.15s;
-        @keyframes search-icon {
-            from {
-                opacity: 0.5;
-                transform: scale(0.5);
-            }
-        }
         svg {
             width: 13px;
         }
         &.search__clear {
             pointer-events: initial;
             cursor: pointer;
-            color: #ff3333;
+            color: rgba(white, 0.4);
             transition: all 0.18s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             svg {
+                position: relative;
+                z-index: 1;
                 width: 11px;
             }
+            &::after {
+                content: "";
+                position: absolute;
+                width: 25px;
+                height: 25px;
+                border-radius: 50%;
+                background: rgba(white, 0.125);
+                opacity: 0;
+                transform: scale(0);
+                transition: all 0.18s;
+            }
             &:hover {
-                transform: scale(1.2);
+                color: rgba(white, 0.8);
+                &::after {
+                    opacity: 1;
+                    transform: none;
+                }
             }
             &:active {
-                transform: scale(1.1);
-                color: #ff4949;
+                color: rgba(white, 0.95);
+                &::after {
+                    background: rgba(white, 0.175);
+                    opacity: 1;
+                    transform: scale(0.95);
+                }
             }
         }
     }
