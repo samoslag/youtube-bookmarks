@@ -4,6 +4,7 @@
         class="search__icon"
         :class="{'search__clear': value}"
         @click="clear()"
+        title="Clear search"
     >
         <Icon :icon="value ? 'times' : 'search'"/>
     </button>
@@ -14,6 +15,13 @@
         @input="$emit('input', $event.target.value)"
         ref="input"
     />
+    <button
+        class="search__change-folder"
+        @click="$emit('change-folder')"
+        title="Select folder"
+    >
+        <Icon icon="bars"/>
+    </button>
   </div>
 </template>
 
@@ -29,7 +37,14 @@ components: { Icon },
         value: { type: String, default: "" }
     },
     mounted () {
-        this.focusInput()
+        if (!this.$root._data.initSearchFocus) {
+            this.focusInput()
+            this.$root._data.initSearchFocus = true
+        } else {
+            setTimeout(() => {
+                this.focusInput()
+            }, 400)
+        }
     },
     methods: {
         focusInput () {
@@ -75,9 +90,6 @@ components: { Icon },
             cursor: pointer;
             color: rgba(white, 0.4);
             transition: all 0.18s;
-            display: flex;
-            justify-content: center;
-            align-items: center;
             svg {
                 position: relative;
                 z-index: 1;
@@ -89,32 +101,29 @@ components: { Icon },
                 width: 25px;
                 height: 25px;
                 border-radius: 50%;
-                background: rgba(white, 0.125);
+                background: #414245;
                 opacity: 0;
-                transform: scale(0);
                 transition: all 0.18s;
             }
             &:hover {
                 color: rgba(white, 0.8);
                 &::after {
                     opacity: 1;
-                    transform: none;
                 }
             }
             &:active {
                 color: rgba(white, 0.95);
                 &::after {
-                    background: rgba(white, 0.175);
+                    background:  #484b4e;
                     opacity: 1;
-                    transform: scale(0.95);
                 }
             }
         }
     }
     .search__input {
-        width: 100%;
+        flex-grow: 1;
         height: 35px;
-        padding: 0 10px 0 30px;
+        padding: 0 5px 0 30px;
         margin: 0;
         border: 0;
         background: transparent;
@@ -127,6 +136,32 @@ components: { Icon },
         &::placeholder {
             color: rgba(white, 0.4);
             font-weight: 400;
+        }
+    }
+    .search__change-folder {
+        width: 38px;
+        height: 37px;
+        display: flex;
+        flex-flow: row nowrap;
+        justify-content: center;
+        align-items: center;
+        background: transparent;
+        border: none;
+        transition: all 0.18s;
+        color: rgba(white, 0.3);
+        svg {
+            height: 16px;
+            transform: translateY(-1px);
+        }
+        &:hover {
+            cursor: pointer;
+            background: #414245;
+            color: rgba(white, 0.75);
+        }
+        &:active {
+            cursor: pointer;
+            background:  #484b4e;
+            color: rgba(white, 0.95);
         }
     }
 }

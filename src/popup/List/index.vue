@@ -1,7 +1,11 @@
 <template>
-  <main>
-    <Search v-if="bookmarks.length > 0" v-model="filter"/>
-    <div v-if="list.length > 0" class="bookmarks">
+  <div class="list">
+    <Search
+        v-if="bookmarks.length > 0"
+        v-model="filter"
+        @change-folder="$emit('change-folder')"
+    />
+    <div v-if="list.length > 0" class="list__bookmarks">
         <Bookmark
             v-for="(item, index) in list"
             :key="'bookmark-' + item.id"
@@ -14,16 +18,20 @@
     <EmptyNotice
         v-if="loaded && ((!bookmarks || bookmarks.length <= 0) || (list.length <= 0 && filter))"
         :text="filter ? 'Search couldn\'t find any matching bookmarks.' : 'Your YouTube bookmarks list is empty.'"
+        :buttons="filter ? null : [{ text: 'Select folder', action: () => { $emit('change-folder') }}]"
     />
-  </main>
+  </div>
 </template>
 
 <script>
 import Search from "./components/Search"
 import Bookmark from "./components/Bookmark"
-import EmptyNotice from "./components/EmptyNotice"
+import EmptyNotice from "./../components/EmptyNotice"
 export default {
     components: { Search, Bookmark, EmptyNotice },
+    props: {
+        selectedFolder: { type: String, default: "" }
+    },
     data () {
         return {
             filter: "",
@@ -82,12 +90,12 @@ export default {
         getYoutubeBookmarks (bookmarks) {
             try {
                 const data = [ ...bookmarks ]
-                const all = data.filter(item => item.id === "0")[0].children
-                const folders = all.filter(item => item.title.toLowerCase() === "bookmarks bar")[0].children
-                const ytBookmarks = folders.filter(item => item.title.toLowerCase() === "youtube")[0].children
+                const all = data.find(item => item.id === "0").children
+                const folders = all.find(item => item.title.toLowerCase() === "bookmarks bar").children
+                const selectedFolder = this.getSelectedFolder(folders)
                 let output = []
-                for (let i = 0; i < ytBookmarks.length; i++) {
-                    let item = { ...ytBookmarks[i] }
+                for (let i = 0; i < selectedFolder.length; i++) {
+                    let item = { ...selectedFolder[i] }
                     if (this.isYoutube(item)) {
                         item.youtubeId = this.getYoutubeId(item)
                         item.title = this.cleanTitle(item)
@@ -98,6 +106,24 @@ export default {
                 return output
             // eslint-disable-next-line no-empty
             } catch {}
+            return []
+        },
+        getSelectedFolder (folders) {
+            if (this.selectedFolder === "") return folders
+            
+            let path = this.selectedFolder.split("-")
+            if (path.length > 0) {
+                let currentFolder = folders
+                for (let i = 0; i < path.length; i++) {
+                    const nextFolderId = path[i]
+                    let folder
+                    try { folder = currentFolder.find(item => item.id === nextFolderId).children }
+                    catch { return [] }
+                    if (folder === undefined) return []
+                    currentFolder = folder
+                }
+                return currentFolder
+            }
             return []
         },
         isYoutube (data) {
@@ -148,12 +174,15 @@ export default {
 </script>
 
 <style lang="scss">
-.bookmarks {
+.list {
     width: 100%;
-    display: flex;
-    flex-flow: column nowrap;
-    justify-content: flex-start;
-    align-items: flex-start;
-    padding: 5px 0;
+    .list__bookmarks {
+        width: 100%;
+        display: flex;
+        flex-flow: column nowrap;
+        justify-content: flex-start;
+        align-items: flex-start;
+        padding: 5px 0;
+    }
 }
 </style>
