@@ -133,7 +133,7 @@ components: { Icon },
         .search__input {
             flex-grow: 1;
             height: 37px;
-            padding: 0 37px 0 1px;
+            padding: 0 37px 0 0;
             margin: 0;
             border: 0;
             background: transparent;

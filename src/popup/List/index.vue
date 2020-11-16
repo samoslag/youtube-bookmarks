@@ -17,7 +17,7 @@
     </div>
     <EmptyNotice
         v-if="loaded && ((!bookmarks || bookmarks.length <= 0) || (list.length <= 0 && filter))"
-        :text="filter ? 'Search couldn\'t find any matching bookmarks.' : 'Your YouTube bookmarks list is empty.'"
+        :text="filter ? 'Search couldn\'t find any matching bookmarks.' : 'Your bookmarks list is empty.'"
         :buttons="filter ? null : [{ text: 'Select folder', action: () => { $emit('change-folder') }}]"
     />
   </div>
@@ -167,7 +167,8 @@ export default {
         },
         scrollToItem (index) {
             const itemHeight = 66
-            const offset = index * itemHeight
+            const padding = 6
+            const offset = index * itemHeight + padding
             window.scroll({ top: offset, left: 0, behavior: "smooth" });
         }
     }
