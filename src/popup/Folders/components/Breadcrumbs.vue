@@ -63,11 +63,11 @@ export default {
 
 <style lang="scss">
 .breadcrumbs {
-  display: flex;
+  display: inline-flex;
   flex-flow: row nowrap;
   justify-content: flex-start;
   align-items: center;
-  padding: 9px 10px 8px 33px;
+  padding: 10px 10px 9px 33px;
   position: relative;
   .breadcrumbs__back {
     padding: 5px;
@@ -100,6 +100,7 @@ export default {
     justify-content: flex-end;
     align-items: center;
     overflow: hidden;
+    max-width: 100%;
     .breadcrumbs__item {
       display: flex;
       flex-flow: row nowrap;
@@ -138,6 +139,35 @@ export default {
         }
       }
     }
+  }
+}
+.breadcrumbs-enter-active,
+.breadcrumbs-leave-active {
+    width: 100%;
+    transition: transform 0.4s;
+    & + .folders__list-animation-wrapper {
+      .folders-move-left-leave-active {
+        top: 34px !important;
+        height: calc(100% - 34px) !important;
+      }
+    }
+}
+.breadcrumbs-leave-active {
+    position: absolute;
+    left: 0;
+    top: 8px;
+}
+.breadcrumbs-enter,
+.breadcrumbs-leave-to {
+    transform: translateX(100%);
+}
+.view-move-right-enter-active,
+.view-move-right-leave-active,
+.view-move-left-enter-active,
+.view-move-left-leave-active {
+  .breadcrumbs-enter-active,
+  .breadcrumbs-leave-active {
+    transition: none !important;
   }
 }
 </style>
