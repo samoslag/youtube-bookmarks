@@ -3,7 +3,8 @@
     class="folders__folder-wrapper"
     :class="{
       'folders__folder-wrapper--highlight': isInSelected(data.id),
-      'folders__folder-wrapper--selected': isSelected(data.id)
+      'folders__folder-wrapper--selected': isSelected(data.id),
+      'folders__folder-wrapper--disabled': !hasId
     }"
   >
     <button
@@ -27,6 +28,11 @@ export default {
     selected: { type: String, default: "" },
     active: { type: String, default: "" }
   },
+  computed: {
+    hasId () {
+      return !!this.data.id
+    }
+  },
   methods: {
     isInSelected (id) {
       let selected = this.selected.split("-")
@@ -45,6 +51,7 @@ export default {
       this.$emit("select", id)
     },
     openFolder (id) {
+      if (!this.hasId) return
       let active = this.active
       if (active) active += "-"
       active += id
@@ -63,7 +70,7 @@ export default {
   position: relative;
   .folders__folder {
     color: rgba(white, 0.75);
-    padding: 7px 10px 7px 41px;
+    padding: 8px 10px 8px 41px;
     width: 100%;
     border: none;
     background-color: #292a2d;
@@ -198,6 +205,21 @@ export default {
     .folders__folder {
       color: white;
       background: #353639;
+    }
+  }
+  &--disabled {
+    .folders__folder {
+      &, &:hover, &:active {
+        cursor: initial;
+        background-color: #292a2d;
+        color: rgba(white, 0.75);
+      }
+    }
+    &.folders__folder-wrapper--selected {
+      .folders__folder {
+        color: white;
+        background: #353639;
+      }
     }
   }
 }

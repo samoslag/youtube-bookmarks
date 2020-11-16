@@ -5,11 +5,13 @@
       class="folders__list"
       :class="{'folders__list--selecting': selecting}"
     >
-      <Breadcrumbs
-        v-if="breadcrumbs.length > 0"
-        :list="breadcrumbs"
-        @select="goBack($event)"
-      />
+      <transition name="breadcrumbs">
+        <Breadcrumbs
+          v-if="breadcrumbs.length > 0"
+          :list="breadcrumbs"
+          @select="goBack($event)"
+        />
+      </transition>
       <div class="folders__list-animation-wrapper">
         <transition :name="'folders-move-' + animationDirection">
           <div :key="active" class="folders__list-content">
@@ -36,12 +38,6 @@
         </transition>
       </div>
     </div>
-    <div v-if="breadcrumbs.length <= 0 && selected" class="folders__bottom-btn">
-      <Button
-        text="Select Bookmarks bar"
-        @click="setSelected('')"
-      />
-    </div>
   </div>
 </template>
 
@@ -50,9 +46,8 @@ import Head from "./components/Head"
 import Breadcrumbs from "./components/Breadcrumbs"
 import Folder from "./components/Folder"
 import EmptyNotice from "./../components/EmptyNotice"
-import Button from "./../components/Button"
 export default {
-  components: { Head, Folder, Breadcrumbs, EmptyNotice, Button },
+  components: { Head, Folder, Breadcrumbs, EmptyNotice },
   model: {
     prop: "selected",
     event: "select"
@@ -77,6 +72,12 @@ export default {
       let activeFolder = this.getActiveFolder()
       let output = []
       if (activeFolder) {
+        if (this.breadcrumbs.length <= 0) {
+          output.push({
+            id: "",
+            title: "Bookmarks bar"
+          })
+        }
         const folders = activeFolder.filter(item => !item.url)
         for (let i = 0; i < folders.length; i++) {
           const folder = folders[i]
@@ -218,13 +219,6 @@ export default {
     .folders-move-right-leave-to,
     .folders-move-left-enter {
       transform: translateX(-100%);
-    }
-  }
-  .folders__bottom-btn {
-    padding: 10px;
-    padding-top: 2px;
-    .button {
-      width: 100%;
     }
   }
 }
