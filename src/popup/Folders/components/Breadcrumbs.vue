@@ -63,11 +63,11 @@ export default {
 
 <style lang="scss">
 .breadcrumbs {
-  display: inline-flex;
+  display: flex;
   flex-flow: row nowrap;
   justify-content: flex-start;
   align-items: center;
-  padding: 10px 10px 9px 33px;
+  padding: 7px 10px 7px 33px;
   position: relative;
   .breadcrumbs__back {
     padding: 5px;
@@ -147,8 +147,8 @@ export default {
     transition: transform 0.4s;
     & + .folders__list-animation-wrapper {
       .folders-move-left-leave-active {
-        top: 34px !important;
-        height: calc(100% - 34px) !important;
+        top: 29px !important;
+        height: calc(100% - 29px) !important;
       }
     }
 }
