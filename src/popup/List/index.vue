@@ -96,7 +96,8 @@ export default {
                 let output = []
                 for (let i = 0; i < selectedFolder.length; i++) {
                     let item = { ...selectedFolder[i] }
-                    if (this.isYoutube(item)) {
+                    const exists = output.find(existing => item.url === existing.url)
+                    if (!exists && this.isYoutube(item)) {
                         item.youtubeId = this.getYoutubeId(item)
                         item.title = this.cleanTitle(item)
                         output.push(item)
