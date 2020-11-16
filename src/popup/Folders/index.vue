@@ -27,7 +27,10 @@
               :text="emptyNoticeText"
               :buttons="active ? [
                 { text: 'Go back', action: goBack },
-                { text: 'Select this folder', action: selectCurrentFolder }
+                ( active === selected ?
+                  { text: 'Selected', disabled: true } :
+                  { text: 'Select this folder', action: selectCurrentFolder }
+                )
               ] : null"
             />
           </div>
