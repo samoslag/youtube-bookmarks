@@ -150,6 +150,9 @@ export default {
         top: 29px !important;
         height: calc(100% - 29px) !important;
       }
+      .folders-move-right-leave-active {
+        top: -29px !important;
+      }
     }
 }
 .breadcrumbs-leave-active {
