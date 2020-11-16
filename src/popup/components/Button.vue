@@ -1,5 +1,10 @@
 <template>
-  <button class="button" @click="$emit('click', $event)">
+  <button
+    class="button"
+    :class="{'button--disabled': disabled}"
+    @click="$emit('click', $event)"
+    :disabled="disabled"
+  >
     {{ text }}
   </button>
 </template>
@@ -7,7 +12,8 @@
 <script>
 export default {
   props: {
-    text: { type: String, default: "" }
+    text: { type: String, default: "" },
+    disabled: { type: Boolean, default: false }
   }
 }
 </script>
@@ -34,6 +40,12 @@ export default {
   &:active {
     color: white;
     background-color: #484b4e;
+  }
+  &--disabled {
+    &, &:hover, &:active {
+      background: rgba(black, 0.2);
+      color: rgba(white, 0.65);
+    }
   }
 }
 </style>
