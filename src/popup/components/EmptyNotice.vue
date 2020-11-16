@@ -5,8 +5,9 @@
       <Button
         v-for="(button, index) in buttons"
         :key="'button-' + index"
-        class="empty-notice__button"
         :text="button.text"
+        :disabled="button.disabled || false"
+        class="empty-notice__button"
         @click="button.action()"
       />
     </div>
