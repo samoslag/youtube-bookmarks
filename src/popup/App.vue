@@ -10,6 +10,7 @@
             <Folders
                 v-if="showFolders"
                 v-model="selectedFolder"
+                @select="setSelectedFolder"
                 @close="showFolders = false; animationDirection = 'right'"
             />
         </div>
@@ -25,8 +26,27 @@ export default {
     data () {
         return {
             showFolders: false,
-            selectedFolder: "591",
+            selectedFolder: "",
             animationDirection: "right"
+        }
+    },
+    created () {
+        this.getSelectedFolder()
+    },
+    methods: {
+        getSelectedFolder () {
+            // eslint-disable-next-line no-undef
+            chrome.storage.sync.get(['selectedFolder'], (res) =>  {
+                if (res.selectedFolder !== undefined) {
+                    this.selectedFolder = res.selectedFolder
+                } else {
+                    this.setSelectedFolder("")
+                }
+            })
+        },
+        setSelectedFolder (value) {
+            // eslint-disable-next-line no-undef
+            chrome.storage.sync.set({ selectedFolder: value })
         }
     }
 }
