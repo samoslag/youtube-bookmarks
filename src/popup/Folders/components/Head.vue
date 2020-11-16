@@ -35,7 +35,7 @@ export default {
     color: rgba(white, 0.8);
   }
   .folders__close {
-    width: 37px;
+    width: 38px;
     height: 37px;
     display: flex;
     flex-flow: row nowrap;
@@ -46,7 +46,8 @@ export default {
     transition: all 0.18s;
     color: rgba(white, 0.4);
     svg {
-      width: 11px;
+      width: 12px;
+      height: 19px;
     }
     &:hover {
       cursor: pointer;

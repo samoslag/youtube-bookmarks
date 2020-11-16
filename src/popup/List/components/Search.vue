@@ -89,17 +89,18 @@ components: { Icon },
             pointer-events: initial;
             cursor: pointer;
             color: rgba(white, 0.4);
-            transition: all 0.18s;
+            transition: color 0.18s;
+            transform: translateY(-1px);
             svg {
                 position: relative;
                 z-index: 1;
-                width: 11px;
+                width: 10px;
             }
             &::after {
                 content: "";
                 position: absolute;
-                width: 25px;
-                height: 25px;
+                width: 24px;
+                height: 24px;
                 border-radius: 50%;
                 background: #414245;
                 opacity: 0;
