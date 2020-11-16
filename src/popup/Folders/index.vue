@@ -1,10 +1,7 @@
 <template>
   <div class="folders">
     <Head @close="close()"/>
-    <div
-      class="folders__list"
-      :class="{'folders__list--selecting': selecting}"
-    >
+    <div class="folders__list">
       <transition name="breadcrumbs">
         <Breadcrumbs
           v-if="breadcrumbs.length > 0"
@@ -21,7 +18,6 @@
               :data="item"
               :selected="selected"
               :active="active"
-              @set-selecting="selecting = $event"
               @set-active="active = $event; animationDirection = 'right'"
               @select="selectFolder($event)"
               @close="close()"
@@ -58,7 +54,6 @@ export default {
   data () {
     return {
       breadcrumbs: [],
-      selecting: false,
       active: "",
       allFolders: [],
       loaded: false,
@@ -198,11 +193,6 @@ export default {
     .folders-move-left-enter-active,
     .folders-move-left-leave-active {
       transition: transform 0.4s;
-      .folders__folder-wrapper {
-        .folders__folder {
-          background: transparent !important;
-        }
-      }
     }
     .folders-move-right-leave-active,
     .folders-move-left-leave-active {

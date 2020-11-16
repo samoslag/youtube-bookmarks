@@ -2,20 +2,24 @@
   <div
     class="folders__folder-wrapper"
     :class="{
-      'folders__folder-wrapper--highlight': isInSelected(data.id),
-      'folders__folder-wrapper--selected': isSelected(data.id),
+      'folders__folder-wrapper--highlight': isInSelected,
+      'folders__folder-wrapper--selected': isSelected,
       'folders__folder-wrapper--disabled': !hasId
     }"
   >
     <button
-      class="folders__folder-select"
-      @mouseenter="$emit('set-selecting', true)"
-      @mouseleave="$emit('set-selecting', false)"
-      @click="selectFolder(data.id)"
+      class="folders__folder-icon"
+      :title="'Open ' + data.title"
+      @click="openFolder()"
     >
-      <Icon icon="check"/>
+      <Icon :icon="hasId ? 'folder' : 'bookmark'" class="folders__folder-icon-default"/>
+      <Icon v-if="isSelected" icon="check" class="folders__folder-icon-selected"/>
     </button>
-    <button class="folders__folder" @click="openFolder(data.id)">{{ data.title }}</button>
+    <button
+      class="folders__folder"
+      :title="'Select ' + data.title"
+      @click="selectFolder()"
+    >{{ data.title }}</button>
   </div>
 </template>
 
@@ -29,28 +33,32 @@ export default {
     active: { type: String, default: "" }
   },
   computed: {
+    isInSelected () {
+      const id = this.data.id
+      let selected = this.selected.split("-")
+      return selected.includes(id)
+    },
+    isSelected () {
+      const id = this.data.id
+      let selected = this.selected.split("-")
+      selected = selected[selected.length - 1]
+      return id == selected
+    },
     hasId () {
       return !!this.data.id
     }
   },
   methods: {
-    isInSelected (id) {
-      let selected = this.selected.split("-")
-      return selected.includes(id)
-    },
-    isSelected (id) {
-      let selected = this.selected.split("-")
-      selected = selected[selected.length - 1]
-      return id == selected
-    },
-    selectFolder (id) {
-      if (this.isSelected(id)) {
+    selectFolder () {
+      const id = this.data.id
+      if (this.isSelected) {
         this.$emit("close")
         return
       }
       this.$emit("select", id)
     },
-    openFolder (id) {
+    openFolder () {
+      const id = this.data.id
       if (!this.hasId) return
       let active = this.active
       if (active) active += "-"
@@ -94,10 +102,9 @@ export default {
       color: white;
     }
   }
-  .folders__folder-select {
+  .folders__folder-icon {
     width: 40px;
-    height: 32px;
-    border-radius: 50%;
+    height: 34px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -108,46 +115,22 @@ export default {
     border: none;
     padding: 0 0 0 1px;
     svg {
-      width: 10px;
-      height: 9px;
-      color: white;
-      transform: scale(0);
-      opacity: 0;
+      color: rgba(white, 0.25);
       position: absolute;
       transition: all 0.18s;
     }
-    &::before {
-      content: "";
-      position: absolute;
+    .folders__folder-icon-default {
+      width: 16px;
+    }
+    .folders__folder-icon-selected {
+      opacity: 0;
+      transform: scale(0);
       width: 14px;
-      height: 14px;
-      border: solid 2px rgba(white, 0.15);
-      transition: all 0.18s;
-      border-radius: 50%;
-    }
-    &::after {
-      content: "";
-      position: absolute;
-      width: 18px;
-      height: 18px;
-      border-radius: 50%;
-      background: rgba(white, 0.2);
-      opacity: 0;
-      transform: scale(0);
-      transition: all 0.18s;
     }
     &:hover {
       cursor: pointer;
       svg {
-        opacity: 1;
-        transform: none;
-      }
-      &::before {
-        border-color: transparent;
-      }
-      &::after {
-        opacity: 1;
-        transform: none;
+        color: rgba(white, 0.6);
       }
       & + .folders__folder {
         color: white;
@@ -155,16 +138,10 @@ export default {
     }
     &:active {
       svg {
-        opacity: 1;
-        transform: none;
+        color: rgba(white, 0.8);
       }
-      &::before {
-        border-color: transparent;
-      }
-      &::after {
-        opacity: 1;
-        transform: none;
-        background: rgba(white, 0.4);
+      & + .folders__folder {
+        color: white;
       }
     }
   }
@@ -175,30 +152,36 @@ export default {
     }
   }
   &--selected {
-    .folders__folder-select {
-      svg {
+    .folders__folder-icon {
+      .folders__folder-icon-default {
+        opacity: 0;
+        transform: scale(0);
+      }
+      .folders__folder-icon-selected {
         opacity: 1;
         transform: none;
-      }
-      &::before {
-        border-color: transparent;
-        background: rgba(white, 0.165);
+        color: rgba(white, 0.6);
       }
       &:hover {
-        &::before {
-          border-color: transparent;
-          background: rgba(white, 0.165);
+        .folders__folder-icon-default {
+          opacity: 1;
+          transform: none;
+          color: rgba(white, 0.6);
         }
-        &::after {
-          display: none;
+        .folders__folder-icon-selected {
+          opacity: 0;
+          transform: scale(0);
         }
       }
       &:active {
-        &::before {
-          background: rgba(white, 0.4);
+        .folders__folder-icon-default {
+          opacity: 1;
+          transform: none;
+          color: rgba(white, 0.8);
         }
-        &::after {
-          display: none;
+        .folders__folder-icon-selected {
+          opacity: 0;
+          transform: scale(0);
         }
       }
     }
@@ -208,35 +191,10 @@ export default {
     }
   }
   &--disabled {
-    .folders__folder {
-      &, &:hover, &:active {
-        cursor: initial;
-        background-color: #292a2d;
-        color: rgba(white, 0.75);
-      }
-    }
-    &.folders__folder-wrapper--selected {
-      .folders__folder {
-        color: white;
-        background: #353639;
-      }
-    }
-  }
-}
-.folders__list {
-  &--selecting {
-    .folders__folder-wrapper {
-      &--selected:not(:hover):not(:active) {
-        .folders__folder-select {
-          &::before {
-            border-color: rgba(white, 0.15);
-            background: transparent;
-          }
-          svg {
-            opacity: 0;
-            transform: scale(0);
-          }
-        }
+    .folders__folder-icon {
+      pointer-events: none;
+      .folders__folder-icon-default {
+        width: 12px;
       }
     }
   }
