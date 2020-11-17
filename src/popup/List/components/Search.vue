@@ -6,6 +6,7 @@
         title="Select folder"
     >
         <Icon icon="bars"/>
+        <span v-if="selectedFolderTitle">{{ selectedFolderTitle }}</span>
     </button>
     <div class="search__input-wrapper">
         <button
@@ -31,12 +32,13 @@
 import Icon from "./../../components/Icon"
 export default {
 components: { Icon },
-  model: {
+    model: {
         prop: "value",
         event: "input"
     },
     props: {
-        value: { type: String, default: "" }
+        value: { type: String, default: "" },
+        selectedFolderTitle: { type: String, default: "Bookmarks" }
     },
     mounted () {
         if (!this.$root._data.initSearchFocus) {
@@ -83,7 +85,7 @@ components: { Icon },
         .search__icon {
             position: absolute;
             padding: 5px;
-            right: 7px;
+            left: 7px;
             background: transparent;
             border: none;
             color: rgba(white, 0.25);
@@ -133,7 +135,7 @@ components: { Icon },
         .search__input {
             flex-grow: 1;
             height: 37px;
-            padding: 0 37px 0 0;
+            padding: 0 10px 0 32px;
             margin: 0;
             border: 0;
             background: transparent;
@@ -150,29 +152,73 @@ components: { Icon },
         }
     }
     .search__change-folder {
-        width: 38px;
+        padding: 0 12px;
         height: 37px;
         display: flex;
         flex-flow: row nowrap;
-        justify-content: center;
+        justify-content: flex-start;
         align-items: center;
         background: transparent;
         border: none;
+        border-right: solid 1px transparent;
         transition: all 0.18s;
-        color: rgba(white, 0.3);
+        max-width: 50%;
+        position: relative;
         svg {
+            color: rgba(white, 0.3);
             height: 16px;
             transform: translateY(-1px);
+            transition: all 0.18s;
+        }
+        span {
+            color: rgba(white, 0.75);
+            transition: all 0.18s;
+            font-size: 13px;
+            line-height: 1;
+            padding-left: 10px;
+            white-space: nowrap;
+            max-width: calc(100% - 14px);
+            text-overflow: ellipsis;
+            overflow: hidden;
+            text-align: left;
+            font-weight: 500;
         }
         &:hover {
             cursor: pointer;
             background: #414245;
-            color: rgba(white, 0.75);
+            border-color: #414245;
+            svg {
+                color: rgba(white, 0.75);
+            }
+            span {
+                color: white;
+            }
+            &::after {
+                opacity: 0;
+            }
         }
         &:active {
             cursor: pointer;
-            background:  #484b4e;
-            color: rgba(white, 0.95);
+            background: #484b4e;
+            border-color: #484b4e;
+            svg {
+                color: rgba(white, 0.95);
+            }
+            span {
+                color: white;
+            }
+            &::after {
+                opacity: 0;
+            }
+        }
+        &::after {
+            content: "";
+            position: absolute;
+            right: -1px;
+            height: 50%;
+            width: 1px;
+            background: rgba(#414245, 0.75);
+            transition: all 0.18s;
         }
     }
 }

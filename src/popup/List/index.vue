@@ -3,6 +3,7 @@
     <Search
         v-if="bookmarks.length > 0"
         v-model="filter"
+        :selectedFolderTitle="selectedFolderTitle"
         @change-folder="$emit('change-folder')"
     />
     <div v-if="list.length > 0" class="list__bookmarks">
@@ -37,7 +38,8 @@ export default {
             filter: "",
             loaded: false,
             bookmarks: [],
-            activeTab: null
+            activeTab: null,
+            selectedFolderTitle: ""
         }
     },
     computed: {
@@ -118,10 +120,13 @@ export default {
                 for (let i = 0; i < path.length; i++) {
                     const nextFolderId = path[i]
                     let folder
-                    try { folder = currentFolder.find(item => item.id === nextFolderId).children }
+                    try { folder = currentFolder.find(item => item.id === nextFolderId) }
                     catch { return [] }
                     if (folder === undefined) return []
-                    currentFolder = folder
+                    if (i + 1 === path.length) {
+                        this.selectedFolderTitle = folder.title
+                    }
+                    currentFolder = folder.children
                 }
                 return currentFolder
             }
