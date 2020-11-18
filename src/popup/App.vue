@@ -37,7 +37,7 @@ export default {
     methods: {
         getSelectedFolder () {
             // eslint-disable-next-line no-undef
-            chrome.storage.sync.get(['selectedFolder'], (res) =>  {
+            chrome.storage.local.get(['selectedFolder'], (res) =>  {
                 if (res.selectedFolder !== undefined) {
                     this.selectedFolder = res.selectedFolder
                 } else {
@@ -47,7 +47,7 @@ export default {
         },
         setSelectedFolder (value) {
             // eslint-disable-next-line no-undef
-            chrome.storage.sync.set({ selectedFolder: value })
+            chrome.storage.local.set({ selectedFolder: value })
         }
     }
 }
