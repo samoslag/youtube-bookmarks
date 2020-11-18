@@ -24,6 +24,7 @@
             :value="value"
             @input="$emit('input', $event.target.value)"
             ref="input"
+            @keydown.esc="clear"
         />
     </div>
   </div>
@@ -55,7 +56,9 @@ components: { Icon },
         focusInput () {
             this.$refs.input.focus()
         },
-        clear () {
+        clear (e) {
+            if (e) e.preventDefault()
+            
             if (this.value) {
                 this.$emit("input", "")
                 this.focusInput()
