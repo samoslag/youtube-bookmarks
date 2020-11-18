@@ -45,6 +45,7 @@ export default {
     &, &:hover, &:active {
       background: rgba(black, 0.2);
       color: rgba(white, 0.65);
+      cursor: default;
     }
   }
 }
