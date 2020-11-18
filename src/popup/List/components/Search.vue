@@ -14,6 +14,7 @@
             :class="{'search__clear': value}"
             @click="clear()"
             title="Clear search"
+            :tabindex="value ? '0' : '-1'"
         >
             <Icon :icon="value ? 'times' : 'search'"/>
         </button>
