@@ -1,5 +1,5 @@
 <template>
-  <main class="app">
+  <main v-if="loaded" class="app">
     <transition :name="'view-move-' + animationDirection">
         <div class="app__view" :key="showFolders">
             <List
@@ -25,6 +25,7 @@ export default {
     components: { List, Folders },
     data () {
         return {
+            loaded: false,
             showFolders: false,
             selectedFolder: "",
             animationDirection: "right"
@@ -43,6 +44,7 @@ export default {
                 } else {
                     this.setSelectedFolder("")
                 }
+                this.loaded = true
             })
         },
         setSelectedFolder (value) {
