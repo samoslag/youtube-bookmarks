@@ -6,10 +6,6 @@
       @click="open(data.url)"
       :title="data.title"
     >
-        <div
-            :style="'background-image: url(' + 'https://img.youtube.com/vi/' + data.youtubeId + '/default.jpg' + ')'"
-            class="bookmark__background-image"
-        />
         <div class="bookmark__content">
             <div class="bookmark__image-container">
                 <div
@@ -81,6 +77,7 @@ export default {
             width: 100px;
             min-width: 100px;
             height: 56px;
+            border-radius: 2px;
             .bookmark__image {
                 width: 100%;
                 height: 100%;
@@ -95,45 +92,21 @@ export default {
             }
         }
         .bookmark__title {
-            font-size: 13px;
-            line-height: 1.3;
+            font-size: 12.5px;
+            line-height: 1.4;
             padding: 2px 15px 0 10px;
             color: rgba(white, 0.75);
             transition: all 0.18s;
-            max-height: 50px;
+            max-height: 53px;
             overflow: hidden;
             font-weight: 500;
             user-select: none;
-        }
-    }
-    .bookmark__background-image {
-        position: absolute;
-        left: 0;
-        top: 0;
-        height: 100%;
-        width: 500%;
-        z-index: 0;
-        background-size: cover;
-        background-position: center;
-        opacity: 0;
-        transition: all 0.18s;
-        &::after {
-            content: "";
-            position: absolute;
-            width: 20%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            background: linear-gradient(90deg, rgba(#414245, 0), #414245 50%);
         }
     }
     &:hover,
     &:active,
     &:focus {
         background-color: #414245;
-        .bookmark__background-image {
-            opacity: 0.2;
-        }
         .bookmark__title {
             color: white;
         }
@@ -153,9 +126,6 @@ export default {
             .bookmark__title {
                 color: white;
             }
-        }
-        .bookmark__background-image {
-            opacity: 0.2;
         }
     }
 }
