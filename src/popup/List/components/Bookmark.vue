@@ -32,6 +32,9 @@ export default {
         active: { type: Boolean, default: false },
         playing: { type: Boolean, default: false }
     },
+    mounted() {
+        if (this.active) this.$emit("active", "auto")
+    },
     methods: {
         open (url) {
             this.$emit("open")

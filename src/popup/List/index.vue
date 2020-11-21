@@ -14,6 +14,7 @@
             :active="activeTab && activeTab.youtubeId === item.youtubeId"
             :playing="activeTab && activeTab.playing"
             @open="activeTab ? scrollToItem(index) : false"
+            @active="scrollToItem(index, $event)"
         />
     </div>
     <EmptyNotice
@@ -170,11 +171,11 @@ export default {
                 }
             })
         },
-        scrollToItem (index) {
+        scrollToItem (index, behavior = "smooth") {
             const itemHeight = 66
             const padding = 6
             const offset = index * itemHeight + padding
-            window.scroll({ top: offset, left: 0, behavior: "smooth" });
+            window.scroll({ top: offset, left: 0, behavior })
         }
     }
 }
