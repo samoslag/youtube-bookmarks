@@ -32,8 +32,8 @@ export default {
         active: { type: Boolean, default: false },
         playing: { type: Boolean, default: false }
     },
-    mounted() {
-        if (this.active) this.$emit("active", "auto")
+    mounted () {
+        if (this.active) this.$emit("active")
     },
     methods: {
         open (url) {
