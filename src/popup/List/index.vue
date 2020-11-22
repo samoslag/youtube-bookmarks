@@ -176,7 +176,7 @@ export default {
             const headerHeight = 37
             const padding = 6
             const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)
-            const offset = index * itemHeight + padding - ((vh - headerHeight - itemHeight) / 2)
+            const offset = Math.ceil(index * itemHeight + padding - ((vh - headerHeight - itemHeight) / 2))
             window.scroll({ top: offset, left: 0, behavior: type === "initial" ? "auto" : "smooth" })
         }
     }
