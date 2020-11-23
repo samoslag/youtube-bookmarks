@@ -54,7 +54,7 @@ export default {
     width: 100%;
     text-decoration: none;
     color: white;
-    transition: all 0.18s;
+    transition: all 0.15s;
     position: relative;
     animation: bookmark 0.25s;
     overflow: hidden;
@@ -87,7 +87,7 @@ export default {
                 background-position: center;
                 background-repeat: no-repeat;
                 background-size: cover;
-                transition: all 0.18s;
+                transition: all 0.15s;
             }
             .bookmark__play-animation {
                 position: absolute;
@@ -99,7 +99,7 @@ export default {
             line-height: 1.4;
             padding: 2px 15px 0 10px;
             color: rgba(white, 0.75);
-            transition: all 0.18s;
+            transition: all 0.15s;
             max-height: 53px;
             overflow: hidden;
             font-weight: 500;

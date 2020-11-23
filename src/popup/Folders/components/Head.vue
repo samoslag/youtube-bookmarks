@@ -43,7 +43,7 @@ export default {
     align-items: center;
     background: transparent;
     border: none;
-    transition: all 0.18s;
+    transition: all 0.15s;
     color: rgba(white, 0.4);
     svg {
       width: 12px;

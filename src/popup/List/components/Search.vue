@@ -104,7 +104,7 @@ components: { Icon },
                 pointer-events: initial;
                 cursor: pointer;
                 color: rgba(white, 0.4);
-                transition: color 0.18s;
+                transition: color 0.15s;
                 transform: translateY(-1px);
                 svg {
                     position: relative;
@@ -119,7 +119,7 @@ components: { Icon },
                     border-radius: 50%;
                     background: #414245;
                     opacity: 0;
-                    transition: all 0.18s;
+                    transition: all 0.15s;
                 }
                 &:hover {
                     color: rgba(white, 0.8);
@@ -144,7 +144,7 @@ components: { Icon },
             border: 0;
             background: transparent;
             color: white;
-            transition: all 0.18s;
+            transition: all 0.15s;
             font-size: 13px;
             line-height: 16px;
             font-weight: 500;
@@ -165,18 +165,18 @@ components: { Icon },
         background: transparent;
         border: none;
         border-right: solid 1px transparent;
-        transition: all 0.18s;
+        transition: all 0.15s;
         max-width: 50%;
         position: relative;
         svg {
             color: rgba(white, 0.3);
             height: 16px;
             transform: translateY(-1px);
-            transition: all 0.18s;
+            transition: all 0.15s;
         }
         span {
             color: rgba(white, 0.75);
-            transition: all 0.18s;
+            transition: all 0.15s;
             font-size: 13px;
             line-height: 1;
             padding-left: 10px;
@@ -222,7 +222,7 @@ components: { Icon },
             height: 50%;
             width: 1px;
             background: rgba(#414245, 0.75);
-            transition: all 0.18s;
+            transition: all 0.15s;
         }
     }
 }

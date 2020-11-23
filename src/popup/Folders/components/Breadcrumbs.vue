@@ -80,7 +80,7 @@ export default {
     left: 10px;
     cursor: pointer;
     color: rgba(white, 0.25);
-    transition: all 0.18s;
+    transition: all 0.15s;
     svg {
         position: relative;
         z-index: 1;
@@ -114,7 +114,7 @@ export default {
         font-weight: 500;
         color: rgba(white, 0.25);
         white-space: nowrap;
-        transition: all 0.18s;
+        transition: all 0.15s;
         padding: 0 7px;
         &:hover {
           cursor: pointer;

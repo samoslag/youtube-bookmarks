@@ -29,7 +29,7 @@ export default {
   line-height: 15px;
   font-weight: 500;
   color: rgba(white, 0.75);
-  transition: all 0.18s;
+  transition: all 0.15s;
   padding: 9px 15px 10px 15px;
   border-radius: 3px;
   &:hover {
