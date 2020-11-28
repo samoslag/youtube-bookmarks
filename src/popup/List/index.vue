@@ -136,7 +136,7 @@ export default {
         isYoutube (data) {
             const url = data.url
             if (data.title && url) {
-                let regExp = /^(?:https?:\/\/)?(?:m\.|www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})(?:\S+)?$/
+                let regExp = /^(?:https?:\/\/)?(?:m\.|music\.|www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})(?:\S+)?$/
                 if (url.match(regExp)) {
                     return true
                 }
