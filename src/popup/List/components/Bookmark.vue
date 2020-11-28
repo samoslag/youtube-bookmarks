@@ -1,10 +1,14 @@
 <template>
     <a
-      :href="!active && data.url ? data.url : null"
-      class="bookmark"
-      :class="{'bookmark--active': active}"
-      @click="open(data.url)"
-      :title="data.title"
+        :href="!active && data.url ? data.url : null"
+        class="bookmark"
+        :class="{
+            'bookmark--active': active,
+            'bookmark--focused': focused
+        }"
+        :title="data.title"
+        tabindex="-1"
+        @click="open()"
     >
         <div class="bookmark__content">
             <div class="bookmark__image-container">
@@ -30,15 +34,23 @@ export default {
     props: {
         data: { type: Object, default: () => {} },
         active: { type: Boolean, default: false },
-        playing: { type: Boolean, default: false }
+        playing: { type: Boolean, default: false },
+        focused: { type: Boolean, default: false }
     },
     mounted () {
         if (this.active) this.$emit("active")
     },
+    watch: {
+        active () {
+            if (this.active) this.$emit("set-active", this.data)
+            else this.$emit("remove-active", this.data)
+        }
+    },
     methods: {
-        open (url) {
+        open () {
             this.$emit("open")
             if (this.active) return
+            const url = this.data.url
             if (url) {
                 // eslint-disable-next-line no-undef
                 chrome.tabs.update({ active: true, url })
@@ -50,6 +62,15 @@ export default {
 </script>
 
 <style lang="scss">
+@mixin bookmark-hover {
+    cursor: pointer;
+    background-color: #414245;
+    .bookmark__content {
+        .bookmark__title {
+            color: white;
+        }
+    }
+}
 .bookmark {
     width: 100%;
     text-decoration: none;
@@ -59,6 +80,7 @@ export default {
     animation: bookmark 0.25s;
     overflow: hidden;
     background-color: #292a2d;
+    cursor: default;
     @keyframes bookmark {
         from { opacity: 0; }
         to { opacity: 1; }
@@ -106,20 +128,9 @@ export default {
             user-select: none;
         }
     }
-    &:hover,
-    &:active,
-    &:focus {
-        background-color: #414245;
-        .bookmark__title {
-            color: white;
-        }
-    }
-    &:active {
-        background-color: #484b4e;
-    }
     &--active {
         position: sticky;
-        top: 36px;
+        top: 37px;
         bottom: 0;
         z-index: 3;
         background: #353639;
@@ -128,6 +139,22 @@ export default {
         .bookmark__content {
             .bookmark__title {
                 color: white;
+            }
+        }
+    }
+    &--focused {
+        @include bookmark-hover();
+    }
+}
+.list__bookmarks {
+    &:not(.list__bookmarks--focused) {
+        .bookmark {
+            &:active,
+            &:hover {
+                @include bookmark-hover();
+            }
+            &:active {
+                background-color: #484b4e;
             }
         }
     }

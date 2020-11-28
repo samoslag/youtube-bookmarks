@@ -5,16 +5,36 @@
         v-model="filter"
         :selectedFolderTitle="selectedFolderTitle"
         @change-folder="$emit('change-folder')"
+        @input="
+            focused = null
+            initFocused = null
+        "
     />
-    <div v-if="list.length > 0" class="list__bookmarks">
+    <div
+        v-if="list.length > 0"
+        class="list__bookmarks"
+        :class="{'list__bookmarks--focused': focused !== null}"
+        @mousemove="
+            focused = null
+            initFocused = null
+        "
+    >
         <Bookmark
             v-for="(item, index) in list"
             :key="'bookmark-' + item.id"
+            :ref="'bookmark-' + index"
             :data="item"
             :active="activeTab && activeTab.youtubeId === item.youtubeId"
             :playing="activeTab && activeTab.playing"
+            :focused="focused === index"
             @open="activeTab ? scrollToItem(index) : false"
-            @active="scrollToItem(index, 'initial')"
+            @active="
+                scrollToItem(index, 'auto')
+                initFocused = index
+                activeBookmark = index
+            "
+            @remove-active="activeBookmark = null"
+            @set-active="$nextTick(() => { activeBookmark = index })"
         />
     </div>
     <EmptyNotice
@@ -40,7 +60,10 @@ export default {
             loaded: false,
             bookmarks: [],
             activeTab: null,
-            selectedFolderTitle: ""
+            activeBookmark: null,
+            selectedFolderTitle: "",
+            focused: null,
+            initFocused: null
         }
     },
     computed: {
@@ -78,9 +101,13 @@ export default {
     created () {
         this.getActiveTab()
         this.getBookmarks()
+        this.setListeners()
 
         // eslint-disable-next-line no-undef
         chrome.tabs.onUpdated.addListener(() => { this.getActiveTab() })
+    },
+    beforeDestroy () {
+        this.removeListeners()
     },
     methods: {
         getBookmarks () {
@@ -171,13 +198,80 @@ export default {
                 }
             })
         },
-        scrollToItem (index, type) {
+        scrollToItem (index, behavior = "smooth") {
             const itemHeight = 66
             const headerHeight = 37
             const padding = 6
             const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)
             const offset = Math.ceil(index * itemHeight + padding - ((vh - headerHeight - itemHeight) / 2))
-            window.scroll({ top: offset, left: 0, behavior: type === "initial" ? "auto" : "smooth" })
+            window.scroll({ top: offset, left: 0, behavior })
+        },
+        setListeners () {
+            document.addEventListener("keydown", this.handleKey)
+        },
+        removeListeners () {
+            document.removeEventListener("keydown", this.handleKey)
+        },
+        handleKey (event) {
+            const arrowUp = 38
+            const arrowDown = 40
+            const enter = 13
+            if (event.keyCode === enter && this.focused !== null && this.focused > -1) {
+                event.preventDefault()
+                const bookmark = this.$refs["bookmark-" + this.focused][0]
+                if (bookmark) bookmark.open()
+                return
+            }
+            if (event.keyCode === arrowUp || event.keyCode === arrowDown) {
+                event.preventDefault()
+
+                let currentFocused
+                if (this.initFocused !== null) {
+                    currentFocused = this.initFocused
+                    this.initFocused = null
+                } else {
+                    currentFocused = this.focused !== null ? this.focused : -1
+                }
+
+                let focused
+                if (event.keyCode === arrowUp) {
+                    focused = currentFocused - 1
+                    if (focused < 0) focused = this.list.length - 1
+                }
+                if (event.keyCode === arrowDown) {
+                    focused = currentFocused + 1
+                    if (focused > (this.list.length - 1)) focused = 0
+                }
+
+                this.focused = focused
+                
+                this.scrollToFocused()
+            }
+        },
+        scrollToFocused () {
+            const index = this.focused
+            const itemHeight = 66
+            const headerHeight = 37
+            const padding = 5
+            const viewportOffset = (window.pageYOffset || document.documentElement.scrollTop)  - (document.documentElement.clientTop || 0)
+            const viewportHeight = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)
+            const itemPosition = this.$refs["bookmark-" + index][0].$el.getBoundingClientRect().top + viewportOffset
+            const itemOffset = Math.ceil(index * itemHeight + padding)
+            const activeBookmark = this.$refs["bookmark-" + this.activeBookmark]
+            let additionalOffset = 0
+            if (activeBookmark && activeBookmark[0]) {
+                const activeOffset = activeBookmark[0].$el.getBoundingClientRect().top
+                if (activeOffset === headerHeight) additionalOffset = itemHeight
+                if (activeOffset === viewportHeight - itemHeight) additionalOffset = itemHeight * -1
+            }
+            let offset = null
+            if (itemPosition - headerHeight < (additionalOffset > 0 ? viewportOffset + additionalOffset : viewportOffset)) {
+                offset = itemOffset - additionalOffset
+            } else if (itemPosition + itemHeight > viewportOffset + (additionalOffset < 0 ? viewportHeight + additionalOffset : viewportHeight)) {
+                offset = itemOffset - (viewportHeight - itemHeight - headerHeight) - additionalOffset
+            }
+
+            if (offset) window.scroll({ top: offset, left: 0, behavior: "smooth" })
         }
     }
 }

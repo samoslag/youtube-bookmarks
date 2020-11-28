@@ -22,7 +22,7 @@
             class="search__input"
             placeholder="Search ..."
             :value="value"
-            @input="$emit('input', $event.target.value)"
+            @input="emit($event.target.value)"
             ref="input"
             @keydown.esc="clear"
         />
@@ -56,13 +56,16 @@ components: { Icon },
         focusInput () {
             this.$refs.input.focus()
         },
-        clear (e) {
-            if (e) e.preventDefault()
-            
+        clear (e) {            
             if (this.value) {
-                this.$emit("input", "")
+                if (e) e.preventDefault()
+                this.emit("")
                 this.focusInput()
             }
+        },
+        emit (value) {
+            window.scroll({ top: 0, left: 0, behavior: "auto" })
+            this.$emit("input", value)
         }
     }
 }
