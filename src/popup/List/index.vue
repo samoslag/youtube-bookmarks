@@ -27,7 +27,7 @@
             :active="activeTab && activeTab.youtubeId === item.youtubeId"
             :playing="activeTab && activeTab.playing"
             :focused="focused === index"
-            @open="activeTab ? scrollToItem(index) : false"
+            @open="activeTab && activeTab.youtubeId === item.youtubeId ? scrollToItem(index) : false"
             @active="
                 scrollToItem(index, 'auto')
                 initFocused = index
@@ -68,11 +68,12 @@ export default {
     },
     computed: {
         list () {
+            let output = []
             if (!this.filter) {
-                return this.bookmarks
+                output = [ ...this.bookmarks ]
             } else {
                 let filter = this.filter.toLowerCase().trim().split(" ")
-                let list = this.bookmarks.filter((item) => {
+                let list = [ ...this.bookmarks ].filter((item) => {
                     let title = item.title.toLowerCase().trim().split(" ")
                     let fullMatch = true
                     
@@ -94,8 +95,17 @@ export default {
                     if (fullMatch) return item
                 })
 
-                return list
+                output = list
             }
+
+            if (this.activeTab && !output.find(bookmark => bookmark.youtubeId === this.activeTab.youtubeId)) {
+                output.push({
+                    ...this.activeTab,
+                    unbookmarked: true
+                })
+            }
+
+            return output
         }
     },
     created () {
