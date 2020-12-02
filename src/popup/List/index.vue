@@ -36,6 +36,7 @@
             "
             @remove-active="activeBookmark = null"
             @set-active="$nextTick(() => { activeBookmark = index })"
+            @add-bookmark="addBookmark(activeTab)"
         />
     </div>
     <EmptyNotice
@@ -210,7 +211,9 @@ export default {
                     this.activeTab = {
                         title: this.cleanTitle(activeTab),
                         youtubeId: this.getYoutubeId(activeTab),
-                        playing: activeTab.audible
+                        playing: activeTab.audible,
+                        url: activeTab.url,
+                        originalTitle: activeTab.title
                     }
                 }
             })
@@ -289,6 +292,24 @@ export default {
             }
 
             if (offset) window.scroll({ top: offset, left: 0, behavior: "smooth" })
+        },
+        addBookmark (tab) {
+            // eslint-disable-next-line no-undef
+            chrome.bookmarks.create({
+                parentId: this.getSelectedFolderId(),
+                title: tab.originalTitle,
+                url: tab.url
+            }, res => {
+                // eslint-disable-next-line no-undef
+                chrome.bookmarks.move(res.id, { index: 0 }, () => { this.getBookmarks() })
+            })
+        },
+        getSelectedFolderId () {
+            if (this.selectedFolder) {
+                const folders = this.selectedFolder.split("-")
+                return folders[folders.length - 1]
+            }
+            return null
         }
     }
 }

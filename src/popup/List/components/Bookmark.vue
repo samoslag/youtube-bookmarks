@@ -14,7 +14,7 @@
             v-if="unbookmarked"
             class="bookmark__add-btn"
             title="Add bookmark"
-            @click.stop
+            @click.stop="$emit('add-bookmark')"
         >
             <Icon icon="plus"/>
         </Button>
@@ -25,7 +25,7 @@
                     class="bookmark__image"
                 />
                 <Animation
-                    v-if="active"
+                    v-if="!unbookmarked && active"
                     :show="playing"
                     class="bookmark__play-animation"
                 />
@@ -97,13 +97,12 @@ export default {
     }
     .bookmark__add-btn {
         position: absolute;
-        top: 10px;
-        left: 15px;
+        left: 49px;
         z-index: 2;
         padding: 0;
         margin: 0;
-        width: 22px;
-        height: 22px;
+        width: 24px;
+        height: 24px;
         border-radius: 2px;
         svg {
             width: 16px;
