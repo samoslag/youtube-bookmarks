@@ -10,6 +10,14 @@
         tabindex="-1"
         @click="open()"
     >
+        <Button
+            v-if="unbookmarked"
+            class="bookmark__add-btn"
+            title="Add bookmark"
+            @click.stop
+        >
+            <Icon icon="plus"/>
+        </Button>
         <div class="bookmark__content">
             <div class="bookmark__image-container">
                 <div
@@ -29,13 +37,16 @@
 
 <script>
 import Animation from "./Animation"
+import Button from "./../../components/Button"
+import Icon from "./../../components/Icon"
 export default {
-    components: { Animation },
+    components: { Animation, Button, Icon },
     props: {
         data: { type: Object, default: () => {} },
         active: { type: Boolean, default: false },
         playing: { type: Boolean, default: false },
-        focused: { type: Boolean, default: false }
+        focused: { type: Boolean, default: false },
+        unbookmarked: { type: Boolean, default: false }
     },
     mounted () {
         if (this.active) this.$emit("active")
@@ -63,36 +74,53 @@ export default {
 
 <style lang="scss">
 @mixin bookmark-hover {
-    cursor: pointer;
     background-color: #414245;
-    .bookmark__content {
-        .bookmark__title {
-            color: white;
-        }
+    .bookmark__title {
+        color: white;
     }
 }
 .bookmark {
     width: 100%;
     text-decoration: none;
     color: white;
-    transition: all 0.125s;
     position: relative;
     animation: bookmark 0.25s;
     overflow: hidden;
-    background-color: #292a2d;
     cursor: default;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    align-items: center;
     @keyframes bookmark {
         from { opacity: 0; }
         to { opacity: 1; }
+    }
+    .bookmark__add-btn {
+        position: absolute;
+        top: 10px;
+        left: 15px;
+        z-index: 2;
+        padding: 0;
+        margin: 0;
+        width: 22px;
+        height: 22px;
+        border-radius: 2px;
+        svg {
+            width: 16px;
+            height: 16px;
+        }
     }
     .bookmark__content {
         display: flex;
         flex-flow: row nowrap;
         justify-content: flex-start;
         align-items: flex-start;
+        flex-grow: 1;
         padding: 5px 10px;
         position: relative;
         z-index: 1;
+        background-color: #292a2d;
+        transition: all 0.125s;
         .bookmark__image-container {
             display: flex;
             flex-flow: row nowrap;
@@ -133,28 +161,40 @@ export default {
         top: 37px;
         bottom: 0;
         z-index: 3;
-        background: #353639;
-        cursor: pointer;
         animation: none;
         .bookmark__content {
+            background: #353639;
             .bookmark__title {
                 color: white;
             }
         }
+        &:hover {
+            .bookmark__content {
+                cursor: default !important;
+            }
+        }
     }
     &--focused {
-        @include bookmark-hover();
+        .bookmark__content {
+            cursor: pointer;
+            @include bookmark-hover();
+        }
     }
 }
 .list__bookmarks {
     &:not(.list__bookmarks--focused) {
         .bookmark {
-            &:active,
-            &:hover {
-                @include bookmark-hover();
+            .bookmark__content {
+                &:active,
+                &:hover {
+                    cursor: pointer;
+                    @include bookmark-hover();
+                }
             }
-            &:active {
-                background-color: #484b4e;
+            .bookmark__content {
+                &:active {
+                    background-color: #484b4e;
+                }
             }
         }
     }
