@@ -30,11 +30,11 @@
                     :show="playing"
                     class="bookmark__play-animation"
                 />
-                <Icon
+                <!-- <Icon
                     v-if="!active && !unbookmarked"
                     icon="play"
                     class="bookmark__play-icon"
-                />
+                /> -->
             </div>
             <div class="bookmark__title">{{ data.title }}</div>
         </div>
@@ -109,6 +109,7 @@ export default {
         margin: 0;
         width: 24px;
         height: 24px;
+        border-radius: 2px;
         svg {
             width: 16px;
             height: 16px;
