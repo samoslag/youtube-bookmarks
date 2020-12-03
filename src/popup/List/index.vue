@@ -281,8 +281,8 @@ export default {
             let additionalOffset = 0
             if (activeBookmark && activeBookmark[0]) {
                 const activeOffset = activeBookmark[0].$el.getBoundingClientRect().top
-                if (activeOffset === headerHeight) additionalOffset = itemHeight
-                if (activeOffset === viewportHeight - itemHeight) additionalOffset = itemHeight * -1
+                if (activeOffset === headerHeight && itemPosition - viewportOffset < itemHeight + headerHeight) additionalOffset = itemHeight
+                if (activeOffset === viewportHeight - itemHeight && itemPosition - viewportOffset > activeOffset - itemHeight) additionalOffset = itemHeight * -1
             }
             let offset = null
             if (itemPosition - headerHeight < (additionalOffset > 0 ? viewportOffset + additionalOffset : viewportOffset)) {
