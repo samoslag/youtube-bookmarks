@@ -4,7 +4,8 @@
         class="bookmark"
         :class="{
             'bookmark--active': active,
-            'bookmark--focused': focused
+            'bookmark--focused': focused,
+            'bookmark--unbookmarked': unbookmarked
         }"
         :title="data.title"
         tabindex="-1"
@@ -25,9 +26,14 @@
                     class="bookmark__image"
                 />
                 <Animation
-                    v-if="!unbookmarked && active"
+                    v-if="active"
                     :show="playing"
                     class="bookmark__play-animation"
+                />
+                <Icon
+                    v-if="!active && !unbookmarked"
+                    icon="play"
+                    class="bookmark__play-icon"
                 />
             </div>
             <div class="bookmark__title">{{ data.title }}</div>
@@ -103,10 +109,13 @@ export default {
         margin: 0;
         width: 24px;
         height: 24px;
-        border-radius: 2px;
         svg {
             width: 16px;
             height: 16px;
+        }
+        &:not(:hover):not(:active) {
+            background: rgba(#292a2d, 0.9);
+            color: rgba(white, 0.9);
         }
     }
     .bookmark__content {
@@ -141,6 +150,20 @@ export default {
             .bookmark__play-animation {
                 position: absolute;
                 z-index: 1;
+            }
+            .bookmark__play-icon {
+                position: absolute;
+                color: rgba(white, 1);
+                width: 17px;
+                height: 17px;
+                z-index: 1;
+                transition: all 0.125s;
+                opacity: 0;
+            }
+            &:hover {
+                .bookmark__play-icon {
+                    opacity: 0.8;
+                }
             }
         }
         .bookmark__title {
@@ -177,6 +200,23 @@ export default {
         .bookmark__content {
             cursor: pointer;
             @include bookmark-hover();
+            .bookmark__image-container {
+                .bookmark__play-icon {
+                    opacity: 0.8;
+                }
+            }
+        }
+    }
+    &--unbookmarked {
+        .bookmark__content {
+            .bookmark__image-container {
+                .bookmark__play-animation {
+                    width: 16px;
+                    height: 16px;
+                    left: 5px;
+                    bottom: 5px;
+                }
+            }
         }
     }
 }
