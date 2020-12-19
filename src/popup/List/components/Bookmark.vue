@@ -30,11 +30,6 @@
                     :show="playing"
                     class="bookmark__play-animation"
                 />
-                <!-- <Icon
-                    v-if="!active && !unbookmarked"
-                    icon="play"
-                    class="bookmark__play-icon"
-                /> -->
             </div>
             <div class="bookmark__title">{{ data.title }}</div>
         </div>
@@ -139,7 +134,6 @@ export default {
             width: 100px;
             min-width: 100px;
             height: 56px;
-            border-radius: 2px;
             .bookmark__image {
                 width: 100%;
                 height: 100%;
@@ -147,6 +141,7 @@ export default {
                 background-repeat: no-repeat;
                 background-size: cover;
                 transition: all 0.125s;
+                border-radius: 2px;
             }
             .bookmark__play-animation {
                 position: absolute;

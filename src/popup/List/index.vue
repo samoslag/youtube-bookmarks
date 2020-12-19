@@ -294,11 +294,12 @@ export default {
             if (offset) window.scroll({ top: offset, left: 0, behavior: "smooth" })
         },
         addBookmark (tab) {
+            let url = this.clearTimestamp(tab.url)
             // eslint-disable-next-line no-undef
             chrome.bookmarks.create({
                 parentId: this.getSelectedFolderId(),
                 title: tab.originalTitle,
-                url: tab.url
+                url
             }, res => {
                 // eslint-disable-next-line no-undef
                 chrome.bookmarks.move(res.id, { index: 0 }, () => { this.getBookmarks() })
@@ -310,6 +311,12 @@ export default {
                 return folders[folders.length - 1]
             }
             return null
+        },
+        clearTimestamp (url) {
+            if (url.split(".com/").length === 2) {
+                url = url.split(".com/")[0] + ".com/watch?v=" + this.getYoutubeId({ url })
+            }
+            return url
         }
     }
 }
