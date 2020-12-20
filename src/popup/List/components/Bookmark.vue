@@ -163,12 +163,12 @@ export default {
             }
         }
         .bookmark__title {
-            font-size: 12.5px;
-            line-height: 1.4;
-            padding: 2px 15px 0 10px;
+            font-size: 13px;
+            line-height: 17px;
+            padding: 3px 15px 0 12px;
             color: rgba(white, 0.75);
             transition: all 0.125s;
-            max-height: 53px;
+            max-height: 37px;
             overflow: hidden;
             font-weight: 500;
             user-select: none;
