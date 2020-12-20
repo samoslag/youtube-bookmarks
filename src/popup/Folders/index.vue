@@ -16,7 +16,7 @@
               v-for="item in folders"
               :key="item.id"
               :data="item"
-              :selected="selected"
+              :selected="selectedFolderFound ? selected : ''"
               :active="active"
               @set-active="active = $event; animationDirection = 'right'"
               @select="selectFolder($event)"
@@ -92,6 +92,21 @@ export default {
       let folder = this.breadcrumbs[this.breadcrumbs.length - 1]
       if (!folder) folder = "Bookmarks"
       return "No folders to select in <b>" + folder + "</b>"
+    },
+    selectedFolderFound () {
+      const path = this.selected.split("-")
+      if (path.length > 0) {
+        let currentFolder = JSON.parse(JSON.stringify(this.allFolders))
+        for (let i = 0; i < path.length; i++) {
+          const nextFolderId = path[i]
+          let folder
+          try { folder = currentFolder.find(item => item.id === nextFolderId) }
+          catch { return false }
+          if (folder === undefined) return false
+          currentFolder = folder.children
+        }
+      }
+      return true
     }
   },
   created () {
@@ -124,7 +139,6 @@ export default {
       let active = this.active
       let path = active.split("-")
       let verifiedPath = [ ...path ]
-      let pathChanged = false
       let currentFolder = this.allFolders
       let breadcrumbs = []
       for (let i = 0; i < path.length; i++) {
@@ -140,7 +154,7 @@ export default {
               breadcrumbs.push(folder.title)
               currentFolder = folder.children
             } else {
-              if (!pathChanged) verifiedPath.splice(i, verifiedPath.length - i + 1)
+              verifiedPath.splice(i, verifiedPath.length - i + 1)
             }
           }
       }
