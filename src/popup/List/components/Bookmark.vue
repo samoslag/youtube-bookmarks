@@ -165,10 +165,11 @@ export default {
         .bookmark__title {
             font-size: 13px;
             line-height: 17px;
-            padding: 3px 15px 0 12px;
+            max-height: 34px;
+            padding: 0 15px 0 12px;
+            margin-top: 3px;
             color: rgba(white, 0.75);
             transition: all 0.125s;
-            max-height: 37px;
             overflow: hidden;
             font-weight: 500;
             user-select: none;
