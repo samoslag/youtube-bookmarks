@@ -166,7 +166,7 @@ export default {
             font-size: 13px;
             line-height: 17px;
             max-height: 34px;
-            padding: 0 15px 0 12px;
+            padding: 0 15px 0 11px;
             margin-top: 3px;
             color: rgba(white, 0.75);
             transition: all 0.125s;
