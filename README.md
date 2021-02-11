@@ -33,4 +33,4 @@ You probably changed the location of your extension folder. Don't worry, your bo
 If the issue persists, submit it on GitHub.
 
 ### Contribute
-If you have any suggestions/requests regarding functionalities or user experiece, be sure to let the creator know.
+If you have any suggestions/requests regarding functionalities or user experience, be sure to let the creator know.
