@@ -16,10 +16,8 @@ yarn watch
 yarn build
 ```
 
-## Use Extension
-### Organize Bookmarks
-Place all YouTube bookmarks you want to display in a folder named **YouTube** (case-insensitive) at the top level of your Bookmarks Bar.
 
+## Use Extension
 ### Load Extension
 *Extension is currently not available on Chrome Web Store, so you have to load it as a developer.*
 1. Download **dist** folder from GitHub repo.
