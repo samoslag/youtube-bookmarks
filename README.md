@@ -16,7 +16,6 @@ yarn watch
 yarn build
 ```
 
-
 ## Use Extension
 ### Load Extension
 *Extension is currently not available on Chrome Web Store, so you have to load it as a developer.*
@@ -30,4 +29,8 @@ yarn build
 
 ### Issues
 #### Extension stopped working
-You probably changed the location of your extension folder. Don't worry, this could have happened unintentionally. Open Chrome, go to **Manage extensions** and remove the extension. Then repeat steps 3. and 4.
+You probably changed the location of your extension folder. Don't worry, your bookmarks are safe. Open Chrome, go to **Manage extensions**, remove the extension, then load it again by following the steps above.
+If the issue persists, submit it on GitHub.
+
+### Contribute
+If you have any suggestions/requests regarding functionalities or user experiece, be sure to let the creator know.
