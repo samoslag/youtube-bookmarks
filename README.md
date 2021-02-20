@@ -8,9 +8,11 @@ npm install
 ```
 
 ### Run
+[Load Extension](#load-extension)
 ```
 yarn watch
 ```
+**dist** will rebuild with every change you make.
 
 ### Build
 ```
