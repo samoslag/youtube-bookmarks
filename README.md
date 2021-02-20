@@ -17,9 +17,6 @@ yarn build
 ```
 
 ## Use Extension
-### Organize Bookmarks
-Place all YouTube bookmarks you want to display in a folder named **YouTube** (case-insensitive) at the top level of your Bookmarks Bar.
-
 ### Load Extension
 *Extension is currently not available on Chrome Web Store, so you have to load it as a developer.*
 1. Download **dist** folder from GitHub repo.
@@ -32,4 +29,8 @@ Place all YouTube bookmarks you want to display in a folder named **YouTube** (c
 
 ### Issues
 #### Extension stopped working
-You probably changed the location of your extension folder. Don't worry, this could have happened unintentionally. Open Chrome, go to **Manage extensions** and remove the extension. Then repeat steps 3. and 4.
+You probably changed the location of your extension folder. Don't worry, your bookmarks are safe. Open Chrome, go to **Manage extensions**, remove the extension, then load it again by following the steps above.
+If the issue persists, submit it on GitHub.
+
+### Contribute
+If you have any suggestions/requests regarding functionalities or user experience, be sure to let the creator know.
