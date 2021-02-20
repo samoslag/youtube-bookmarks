@@ -89,6 +89,7 @@ components: { Icon },
         flex-flow: row nowrap;
         justify-content: space-between;
         align-items: center;
+        max-width: 50%;
         .search__icon {
             position: absolute;
             padding: 5px;
@@ -152,6 +153,7 @@ components: { Icon },
             line-height: 16px;
             font-weight: 500;
             padding-bottom: 2px;
+            max-width: 100%;
             &::placeholder {
                 color: rgba(white, 0.4);
                 font-weight: 400;
