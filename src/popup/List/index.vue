@@ -123,6 +123,8 @@ export default {
 
         // eslint-disable-next-line no-undef
         chrome.tabs.onUpdated.addListener(() => { this.getActiveTab() })
+        
+        window.GetList = () => { console.log(this.generateOutput()) }
     },
     beforeDestroy () {
         this.removeListeners()
@@ -317,6 +319,24 @@ export default {
                 url = url.split(".com/")[0] + ".com/watch?v=" + this.getYoutubeId({ url })
             }
             return url
+        },
+        generateOutput () {
+            const getDate = () => {
+                const now = new Date
+                let d = now.getDate()
+                if (d < 10) d = `0${d}`
+                let m = now.getMonth() + 1
+                if (m < 10) m = `0${m}`
+                const y = now.getFullYear()
+                return `${m}-${d}-${y}`
+            }
+            const getList = () => {
+                let list = ""
+                this.bookmarks.forEach(bookmark => { list += `\n\n${bookmark.title}\n${bookmark.url}` })
+                return list
+            }
+            const output = `Folder: ${this.selectedFolderTitle}\nDate: ${getDate()}\nCount: ${this.bookmarks.length}${getList()}`
+            return output
         }
     }
 }
