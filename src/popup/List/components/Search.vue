@@ -108,7 +108,7 @@ components: { Icon },
                 pointer-events: initial;
                 cursor: pointer;
                 color: rgba(white, 0.4);
-                transition: color 0.15s;
+                transition: color 0.125s;
                 transform: translateY(-1px);
                 svg {
                     position: relative;
@@ -123,17 +123,21 @@ components: { Icon },
                     border-radius: 50%;
                     background: #414245;
                     opacity: 0;
-                    transition: all 0.15s;
+                    transition: all 0.125s;
                 }
                 &:hover {
                     color: rgba(white, 0.8);
+                    transition: none;
                     &::after {
+                        transition: none;
                         opacity: 1;
                     }
                 }
                 &:active {
                     color: rgba(white, 0.95);
+                    transition: all 0.125s;
                     &::after {
+                        transition: all 0.125s;
                         background:  #484b4e;
                         opacity: 1;
                     }
