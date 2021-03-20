@@ -56,7 +56,6 @@ export default {
       color: rgba(white, 0.8);
     }
     &:active {
-      transition: all 0.1s;
       cursor: pointer;
       background:  #484b4e;
       color: rgba(white, 0.95);

@@ -199,17 +199,17 @@ components: { Icon },
             cursor: pointer;
             background: #414245;
             border-color: #414245;
-            transition: all 0.1s;
+            transition: all 0.05s;
             svg {
-                transition: all 0.1s;
+                transition: all 0.05s;
                 color: rgba(white, 0.75);
             }
             span {
-                transition: all 0.1s;
+                transition: all 0.05s;
                 color: white;
             }
             &::after {
-                transition: all 0.1s;
+                transition: all 0.05s;
                 opacity: 0;
             }
         }
