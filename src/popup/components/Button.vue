@@ -37,10 +37,12 @@ export default {
     cursor: pointer;
     color: white;
     background-color: #414245;
+    transition: none;
   }
   &:active {
     color: white;
     background-color: #484b4e;
+    transition: all 0.1s;
   }
   &--disabled {
     &, &:hover, &:active {

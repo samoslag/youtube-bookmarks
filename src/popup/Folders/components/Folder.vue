@@ -82,7 +82,7 @@ export default {
     width: 100%;
     border: none;
     background-color: #292a2d;
-    transition: all 0.125s;
+    transition: all 0.1s;
     overflow: hidden;
     font-size: 14px;
     line-height: 18px;
@@ -110,14 +110,14 @@ export default {
     align-items: center;
     position: absolute;
     left: 0;
-    background: transparent;
+    background: transparent;	
     z-index: 1;
     border: none;
     padding: 0 0 0 1px;
     svg {
       color: rgba(white, 0.25);
       position: absolute;
-      transition: all 0.125s;
+      transition: all 0.1s;
     }
     .folders__folder-icon-default {
       width: 16px;

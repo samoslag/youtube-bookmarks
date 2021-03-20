@@ -88,6 +88,7 @@ export default {
         height: 15px;
     }
     &:hover {
+        transition: all 0.1s;
         color: rgba(white, 0.75);
     }
     &:active {
@@ -117,6 +118,7 @@ export default {
         transition: all 0.15s;
         padding: 0 7px;
         &:hover {
+          transition: all 0.1s;
           cursor: pointer;
           color:rgba(white, 0.75);
         }

@@ -124,7 +124,7 @@ export default {
         position: relative;
         z-index: 1;
         background-color: #292a2d;
-        transition: all 0.125s;
+        transition: all 0.1s;
         .bookmark__image-container {
             display: flex;
             flex-flow: row nowrap;
@@ -140,7 +140,7 @@ export default {
                 background-position: center;
                 background-repeat: no-repeat;
                 background-size: cover;
-                transition: all 0.125s;
+                transition: all 0.1s;
                 border-radius: 2px;
             }
             .bookmark__play-animation {
@@ -153,7 +153,7 @@ export default {
                 width: 17px;
                 height: 17px;
                 z-index: 1;
-                transition: all 0.125s;
+                transition: all 0.1s;
                 opacity: 0;
             }
             &:hover {
@@ -169,7 +169,7 @@ export default {
             padding: 0 15px 0 11px;
             margin-top: 3px;
             color: rgba(white, 0.75);
-            transition: all 0.125s;
+            transition: all 0.1s;
             overflow: hidden;
             font-weight: 500;
             user-select: none;

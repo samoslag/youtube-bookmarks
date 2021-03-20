@@ -152,7 +152,6 @@ components: { Icon },
             border: 0;
             background: transparent;
             color: white;
-            transition: all 0.15s;
             font-size: 13px;
             line-height: 16px;
             font-weight: 500;
@@ -200,13 +199,17 @@ components: { Icon },
             cursor: pointer;
             background: #414245;
             border-color: #414245;
+            transition: all 0.1s;
             svg {
+                transition: all 0.1s;
                 color: rgba(white, 0.75);
             }
             span {
+                transition: all 0.1s;
                 color: white;
             }
             &::after {
+                transition: all 0.1s;
                 opacity: 0;
             }
         }

@@ -50,11 +50,13 @@ export default {
       height: 19px;
     }
     &:hover {
+      transition: all 0.05s;
       cursor: pointer;
       background: #414245;
       color: rgba(white, 0.8);
     }
     &:active {
+      transition: all 0.1s;
       cursor: pointer;
       background:  #484b4e;
       color: rgba(white, 0.95);
