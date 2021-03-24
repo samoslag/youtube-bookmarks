@@ -118,8 +118,8 @@ components: { Icon },
                 &::after {
                     content: "";
                     position: absolute;
-                    width: 24px;
-                    height: 24px;
+                    width: 26px;
+                    height: 26px;
                     border-radius: 50%;
                     background: #414245;
                     opacity: 0;

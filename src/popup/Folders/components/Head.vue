@@ -50,7 +50,7 @@ export default {
       height: 19px;
     }
     &:hover {
-      transition: all 0.05s;
+      transition: all 0s;
       cursor: pointer;
       background: #414245;
       color: rgba(white, 0.8);
