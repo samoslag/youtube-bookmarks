@@ -13,7 +13,10 @@
     <div
         v-if="list.length > 0"
         class="list__bookmarks"
-        :class="{'list__bookmarks--focused': focused !== null}"
+        :class="{
+            'list__bookmarks--focused': focused !== null,
+            'list__bookmarks--missing': notFound.length
+        }"
         @mousemove="
             focused = null
             initFocused = null
@@ -37,12 +40,19 @@
             @remove-active="activeBookmark = null"
             @set-active="$nextTick(() => { activeBookmark = index })"
             @add-bookmark="addBookmark(activeTab)"
+            @not-found="addBookmarkToNotFound(item)"
         />
     </div>
     <EmptyNotice
         v-if="loaded && ((!bookmarks || bookmarks.length <= 0) || (list.length <= 0 && filter))"
         :text="filter ? 'Search couldn\'t find any matching bookmarks.' : 'Your bookmarks list is empty.'"
         :buttons="filter ? null : [{ text: 'Select folder', action: () => { $emit('change-folder') }}]"
+    />
+    <NotFoundAlert
+        v-if="!filter && notFound.length"
+        :key="notFound.length"
+        :list="notFound"
+        @select="scrollToMissingItem"
     />
   </div>
 </template>
@@ -51,8 +61,10 @@
 import Search from "./components/Search"
 import Bookmark from "./components/Bookmark"
 import EmptyNotice from "./../components/EmptyNotice"
+import NotFoundAlert from "./components/NotFoundAlert"
+
 export default {
-    components: { Search, Bookmark, EmptyNotice },
+    components: { Search, Bookmark, EmptyNotice, NotFoundAlert },
     props: {
         selectedFolder: { type: String, default: "" }
     },
@@ -65,7 +77,8 @@ export default {
             activeBookmark: null,
             selectedFolderTitle: "",
             focused: null,
-            initFocused: null
+            initFocused: null,
+            notFound: []
         }
     },
     computed: {
@@ -337,6 +350,14 @@ export default {
             }
             const output = `Folder: ${this.selectedFolderTitle}\nDate: ${getDate()}\nCount: ${this.bookmarks.length}${getList()}`
             return output
+        },
+        addBookmarkToNotFound (bookmark) {
+            const exists = this.notFound.find(item => item.url === bookmark.url) !== undefined
+            if (!exists) this.notFound.push(bookmark)
+        },
+        scrollToMissingItem (id) {
+            const item = this.list.find(item => item.id === id)
+            if (item) this.scrollToItem(this.list.indexOf(item))
         }
     }
 }

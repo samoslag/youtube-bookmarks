@@ -5,7 +5,8 @@
         :class="{
             'bookmark--active': active,
             'bookmark--focused': focused,
-            'bookmark--unbookmarked': unbookmarked
+            'bookmark--unbookmarked': unbookmarked,
+            'bookmark--missing': notFound
         }"
         :title="data.title"
         tabindex="-1"
@@ -21,9 +22,12 @@
         </Button>
         <div class="bookmark__content">
             <div class="bookmark__image-container">
-                <div
-                    :style="'background-image: url(' + 'https://img.youtube.com/vi/' + data.youtubeId + '/default.jpg' + ')'"
+                <img
+                    v-if="!notFound"
+                    :src="'https://img.youtube.com/vi/' + data.youtubeId + '/mqdefault.jpg'"
                     class="bookmark__image"
+                    ref="thumbnail"
+                    @load="checkValidity"
                 />
                 <Animation
                     v-if="active"
@@ -49,6 +53,11 @@ export default {
         focused: { type: Boolean, default: false },
         unbookmarked: { type: Boolean, default: false }
     },
+    data () {
+        return {
+            notFound: false
+        }
+    },
     mounted () {
         if (this.active) this.$emit("active")
     },
@@ -67,6 +76,13 @@ export default {
                 // eslint-disable-next-line no-undef
                 chrome.tabs.update({ active: true, url })
                 window.close()
+            }
+        },
+        checkValidity () {
+            const thumbnail = this.$refs.thumbnail
+            if (thumbnail && thumbnail.naturalWidth === 120) {
+                this.notFound = true
+                this.$emit("not-found")
             }
         }
     }
@@ -137,10 +153,7 @@ export default {
             .bookmark__image {
                 width: 100%;
                 height: 100%;
-                background-position: center;
-                background-repeat: no-repeat;
-                background-size: cover;
-                transition: all 0.1s;
+                object-fit: cover;
                 border-radius: 2px;
             }
             .bookmark__play-animation {
@@ -216,6 +229,14 @@ export default {
             }
         }
     }
+    &--missing {
+        .bookmark__content {
+            .bookmark__image-container {
+                border-radius: 2px;
+                background: #353639;
+            }
+        }
+    }
 }
 .list__bookmarks {
     &:not(.list__bookmarks--focused) {
@@ -231,6 +252,13 @@ export default {
                 &:active {
                     background-color: #484b4e;
                 }
+            }
+        }
+    }
+    &--missing {
+        .bookmark {
+            &--active {
+                bottom: 34px;
             }
         }
     }
