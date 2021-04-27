@@ -21,23 +21,26 @@
       </button>
     </button>
 
-    <div v-if="open" class="not-found-alert__list">
-      <button
-        v-for="item in list"
-        :key="item.id"
-        class="not-found-alert__item"
-        :title="item.title"
-        @click="selectBookmark(item)"
-      >{{ item.title }}</button>
-    </div>
+    <Expand>
+      <div v-if="open" class="not-found-alert__list">
+        <button
+          v-for="item in list"
+          :key="item.id"
+          class="not-found-alert__item"
+          :title="item.title"
+          @click="selectBookmark(item)"
+        >{{ item.title }}</button>
+      </div>
+    </Expand>
   </div>
 </template>
 
 <script>
 import Icon from "./../../components/Icon"
+import Expand from "./../../components/Expand"
 
 export default {
-  components: { Icon },
+  components: { Icon, Expand },
   data () {
     return {
       open: false
@@ -99,7 +102,6 @@ export default {
     .not-found-alert__title {
       font-size: 13px;
       line-height: 17px;
-      font-weight: 500;
       display: flex;
       flex-flow: row nowrap;
       justify-content: flex-start;
@@ -118,7 +120,6 @@ export default {
         color: rgba(white, 0.75);
         transition: all 0.1s;
         padding-right: 25px;
-        transform: translateY(-1px);
       }
       svg {
         width: 16px;
@@ -184,8 +185,6 @@ export default {
     }
   }
   .not-found-alert__list {
-    display: flex;
-    flex-flow: column nowrap;
     width: 100%;
     overflow: auto;
     max-height: calc(100vh - 34px);
