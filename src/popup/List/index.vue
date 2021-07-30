@@ -15,7 +15,7 @@
         class="list__bookmarks"
         :class="{
             'list__bookmarks--focused': focused !== null,
-            'list__bookmarks--missing': notFound.length
+            'list__bookmarks--missing': !filter && notFound.length
         }"
         @mousemove="
             focused = null
