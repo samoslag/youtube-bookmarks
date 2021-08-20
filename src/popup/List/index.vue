@@ -53,6 +53,7 @@
         :key="notFound.length"
         :list="notFound"
         @select="scrollToMissingItem"
+        @delete="deleteBookmark"
     />
   </div>
 </template>
@@ -319,6 +320,10 @@ export default {
                 // eslint-disable-next-line no-undef
                 chrome.bookmarks.move(res.id, { index: 0 }, () => { this.getBookmarks() })
             })
+        },
+        deleteBookmark (id) {
+            // eslint-disable-next-line no-undef
+            chrome.bookmarks.remove(id, () => { this.getBookmarks() })
         },
         getSelectedFolderId () {
             if (this.selectedFolder) {

@@ -23,13 +23,25 @@
 
     <Expand>
       <div v-if="open" class="not-found-alert__list">
-        <button
+        <div
           v-for="item in list"
           :key="item.id"
-          class="not-found-alert__item"
-          :title="item.title"
-          @click="selectBookmark(item)"
-        >{{ item.title }}</button>
+          class="not-found-alert__item-wrapper"
+        >
+          <button
+            :title="item.title"
+            class="not-found-alert__item"
+            @click="selectBookmark(item)"
+          >{{ item.title }}</button>
+
+          <button
+            title="Delete bookmark"
+            class="not-found-alert__item-delete-btn"
+            @click="deleteBookmark(item)"
+          >
+            <Icon icon="trash"/>
+          </button>
+        </div>
       </div>
     </Expand>
   </div>
@@ -69,6 +81,11 @@ export default {
     selectBookmark (bookmark) {
       this.open = false
       this.$emit("select", bookmark.id)
+    },
+    deleteBookmark (bookmark) {
+      if (this.list.length === 1) this.open = false
+
+      this.$emit("delete", bookmark.id)
     }
   }
 }
@@ -166,7 +183,7 @@ export default {
         transition: all 0.125s;
       }
       &:hover {
-        color: rgba(white, 0.8);
+        color: rgba(white, 0.75);
         transition: none;
         &::after {
             transition: none;
@@ -174,7 +191,7 @@ export default {
         }
       }
       &:active {
-        color: rgba(white, 0.95);
+        color: rgba(white, 0.9);
         transition: all 0.125s;
         &::after {
           transition: all 0.125s;
@@ -188,29 +205,79 @@ export default {
     width: 100%;
     overflow: auto;
     max-height: calc(100vh - 34px);
-    .not-found-alert__item {
+    .not-found-alert__item-wrapper {
       width: 100%;
-      font-size: 13px;
-      font-weight: 400;
-      line-height: 18px;
-      background: #2f3033;
-      padding: 7px 10px;
-      color: rgba(white, 0.75);
-      border: none;
-      text-align: left;
-      white-space: nowrap;
-      display: block;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      &:hover {
-        transition: all 0.05s;
-        color: white;
-        background: #414245;
-        cursor: pointer;
+      position: relative;
+      .not-found-alert__item {
+        width: 100%;
+        font-size: 13px;
+        font-weight: 400;
+        line-height: 18px;
+        background: #2f3033;
+        padding: 7px 30px 7px 10px;
+        color: rgba(white, 0.75);
+        border: none;
+        text-align: left;
+        white-space: nowrap;
+        display: block;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        &:hover {
+          transition: all 0.05s;
+          color: white;
+          background: #414245;
+          cursor: pointer;
+        }
+        &:active {
+          color: white;
+          background: #484b4e;
+        }
       }
-      &:active {
-        color: white;
-        background: #484b4e;
+      .not-found-alert__item-delete-btn {
+        padding: 5px;
+        position: absolute;
+        right: 7px;
+        top: 5px;
+        background: transparent;
+        border: none;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        color: rgba(white, 0.4);
+        transition: color 0.125s;
+        svg {
+          position: relative;
+          z-index: 1;
+          width: 10px;
+        }
+        &::after {
+          content: "";
+          position: absolute;
+          width: 26px;
+          height: 26px;
+          border-radius: 50%;
+          background: #414245;
+          opacity: 0;
+          transition: all 0.125s;
+        }
+        &:hover {
+          color: rgba(white, 0.8);
+          transition: none;
+          &::after {
+              transition: none;
+              opacity: 1;
+          }
+        }
+        &:active {
+          color: rgba(white, 0.95);
+          transition: all 0.125s;
+          &::after {
+            transition: all 0.125s;
+            background: #484b4e;
+            opacity: 1;
+          }
+        }
       }
     }
   }
