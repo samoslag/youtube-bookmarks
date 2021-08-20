@@ -147,6 +147,7 @@ export default {
         getBookmarks () {
             // eslint-disable-next-line no-undef
             chrome.bookmarks.getTree((bookmarks) => {
+                this.notFound = []
                 this.bookmarks = this.getYoutubeBookmarks(bookmarks)
                 this.loaded = true
             })
@@ -357,6 +358,8 @@ export default {
             return output
         },
         addBookmarkToNotFound (bookmark) {
+            if (!bookmark.id) return
+
             const exists = this.notFound.find(item => item.url === bookmark.url) !== undefined
             if (!exists) this.notFound.push(bookmark)
         },

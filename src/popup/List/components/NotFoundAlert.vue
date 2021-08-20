@@ -97,13 +97,11 @@ export default {
   bottom: 0;
   width: 100%;
   z-index: 3;
-  animation: not-found-alert 0.2s;
-  @keyframes not-found-alert {
-    from {
-      transform: translateY(35px);
-    }
-    to {
-      transform: none;
+  animation: not-found-alert-disable-overflow 0.2s;
+  @keyframes not-found-alert-disable-overflow {
+    from, to {
+      height: 34px;
+      overflow: hidden;
     }
   }
   .not-found-alert__head {
@@ -116,6 +114,15 @@ export default {
     border: none;
     padding: 0;
     position: relative;
+    animation: not-found-alert 0.2s;
+    @keyframes not-found-alert {
+      from {
+        transform: translateY(35px);
+      }
+      to {
+        transform: none;
+      }
+    }
     .not-found-alert__title {
       font-size: 13px;
       line-height: 17px;
