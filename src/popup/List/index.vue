@@ -147,7 +147,6 @@ export default {
         getBookmarks () {
             // eslint-disable-next-line no-undef
             chrome.bookmarks.getTree((bookmarks) => {
-                this.notFound = []
                 this.bookmarks = this.getYoutubeBookmarks(bookmarks)
                 this.loaded = true
             })
@@ -325,6 +324,14 @@ export default {
         deleteBookmark (id) {
             // eslint-disable-next-line no-undef
             chrome.bookmarks.remove(id, () => { this.getBookmarks() })
+            this.removeFromNotFound(id)
+        },
+        removeFromNotFound (id) {
+            const bookmark = this.notFound.find(item => item.id === id)
+            if (!bookmark) return
+
+            const index = this.notFound.indexOf(bookmark)
+            this.notFound.splice(index, 1)
         },
         getSelectedFolderId () {
             if (this.selectedFolder) {
