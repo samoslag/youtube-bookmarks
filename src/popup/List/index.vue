@@ -50,7 +50,6 @@
     />
     <NotFoundAlert
         v-if="!filter && notFound.length"
-        :key="notFound.length"
         :list="notFound"
         @select="scrollToMissingItem"
         @delete="deleteBookmark"
