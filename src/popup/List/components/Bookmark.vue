@@ -13,12 +13,21 @@
         @click="open()"
     >
         <Button
-            v-if="unbookmarked"
+            v-if="unbookmarked && !notFound"
             class="bookmark__add-btn"
             title="Add bookmark"
             @click.stop="$emit('add-bookmark')"
         >
             <Icon icon="plus"/>
+        </Button>
+
+        <Button
+            v-if="notFound && !unbookmarked && canAdd"
+            class="bookmark__replace-btn"
+            title="Replace bookamrk"
+            @click.stop="$emit('replace-bookmark')"
+        >
+            <Icon icon="sync"/>
         </Button>
         <div class="bookmark__content">
             <div class="bookmark__image-container">
@@ -51,7 +60,8 @@ export default {
         active: { type: Boolean, default: false },
         playing: { type: Boolean, default: false },
         focused: { type: Boolean, default: false },
-        unbookmarked: { type: Boolean, default: false }
+        unbookmarked: { type: Boolean, default: false },
+        canAdd: { type: Boolean, default: false }
     },
     data () {
         return {
@@ -112,22 +122,37 @@ export default {
         from { opacity: 0; }
         to { opacity: 1; }
     }
-    .bookmark__add-btn {
+    .bookmark__add-btn,
+    .bookmark__replace-btn {
         position: absolute;
-        left: 49px;
+        border-radius: 3px;
         z-index: 2;
         padding: 0;
         margin: 0;
-        width: 24px;
-        height: 24px;
-        border-radius: 2px;
         svg {
             width: 16px;
             height: 16px;
         }
+    }
+    .bookmark__add-btn {
+        left: 49px;
+        width: 24px;
+        height: 24px;
         &:not(:hover):not(:active) {
             background: rgba(#292a2d, 0.9);
             color: rgba(white, 0.9);
+        }
+    }
+    .bookmark__replace-btn {
+        left: 44px;
+        width: 32px;
+        height: 32px;
+        color: white;
+        &:hover {
+            background-color: #484b4e;
+        }
+        &:active {
+            background-color: lighten(#484b4e, 4%);
         }
     }
     .bookmark__content {

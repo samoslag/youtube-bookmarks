@@ -31,6 +31,7 @@
             :playing="activeTab && activeTab.playing"
             :focused="focused === index"
             :unbookmarked="item.unbookmarked"
+            :can-add="canAdd"
             @open="activeTab && activeTab.youtubeId === item.youtubeId ? scrollToItem(index) : false"
             @active="
                 scrollToItem(index, 'auto')
@@ -39,7 +40,8 @@
             "
             @remove-active="activeBookmark = null"
             @set-active="$nextTick(() => { activeBookmark = index })"
-            @add-bookmark="addBookmark(activeTab)"
+            @add-bookmark="addBookmark()"
+            @replace-bookmark="replaceBookmark(item)"
             @not-found="addBookmarkToNotFound(item)"
         />
     </div>
@@ -127,6 +129,9 @@ export default {
             }
 
             return output
+        },
+        canAdd () {
+            return this.list.find(item => item.unbookmarked) !== undefined 
         }
     },
     created () {
@@ -308,16 +313,17 @@ export default {
 
             if (offset) window.scroll({ top: offset, left: 0, behavior: "smooth" })
         },
-        addBookmark (tab) {
-            let url = this.clearTimestamp(tab.url)
+        addBookmark (index = 0) {
+            const data = this.activeTab
+            let url = this.clearTimestamp(data.url)
             // eslint-disable-next-line no-undef
             chrome.bookmarks.create({
                 parentId: this.getSelectedFolderId(),
-                title: tab.originalTitle,
+                title: data.originalTitle,
                 url
             }, res => {
                 // eslint-disable-next-line no-undef
-                chrome.bookmarks.move(res.id, { index: 0 }, () => { this.getBookmarks() })
+                chrome.bookmarks.move(res.id, { index }, () => { this.getBookmarks() })
             })
         },
         deleteBookmark (id) {
@@ -331,6 +337,10 @@ export default {
 
             const index = this.notFound.indexOf(bookmark)
             this.notFound.splice(index, 1)
+        },
+        replaceBookmark (bookmark) {
+            this.deleteBookmark(bookmark.id)
+            this.addBookmark(bookmark.index)
         },
         getSelectedFolderId () {
             if (this.selectedFolder) {
