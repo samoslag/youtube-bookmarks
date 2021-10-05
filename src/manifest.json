@@ -22,8 +22,6 @@
   "permissions": [
     "bookmarks",
     "tabs",
-    "storage",
-    "<all_urls>",
-    "*://*/*"
+    "storage"
   ]
 }
