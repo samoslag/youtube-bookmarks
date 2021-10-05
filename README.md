@@ -1,5 +1,5 @@
 # YouTube Bookmarks Chrome Extension
-Awesome visualization for your YouTube bookmarks.
+Visualize YouTube bookmarks.
 
 ## Development
 ### Setup
