@@ -19,10 +19,7 @@ yarn watch
 yarn build
 ```
 
-## Usage
-*Extension is currently not available in Chrome Web Store, so you have to load it as a developer.*
-
-### Load Extension
+## Load Extension
 1. Download **dist** folder from GitHub repo.
 
 2. In order for extension to work you'll have to keep the folder at the same location as it is when you load it into Chrome. So store it somewhere you don't mind. You can rename the folder, but don't change the content inside.
