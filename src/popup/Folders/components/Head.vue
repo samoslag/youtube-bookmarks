@@ -1,7 +1,7 @@
 <template>
   <div class="folders__head">
     <span class="folders__title">Select folder</span>
-    <button class="folders__close" @click="$emit('close')" title="Close">
+    <button class="folders__close" @click="$emit('close')" title="Cancel">
       <Icon icon="times"/>
     </button>
   </div>
