@@ -167,7 +167,7 @@ export default {
                     const exists = output.find(existing => item.url === existing.url)
                     if (!exists && this.isYoutube(item)) {
                         item.youtubeId = this.getYoutubeId(item)
-                        item.title = this.cleanTitle(item)
+                        item.title = this.cleanTitle(item.title)
                         output.push(item)
                     }
 
@@ -219,9 +219,11 @@ export default {
 
             return id
         },
-        cleanTitle (data) {
-            let title = data.title
-            return title.split(" - YouTube")[0]
+        cleanTitle (title) {
+            return title
+                .replace(/^\([0-9]+\)/, "")
+                .trim()
+                .split(" - YouTube")[0]
         },
         getActiveTab () {
             // eslint-disable-next-line no-undef
@@ -229,7 +231,7 @@ export default {
                 const activeTab = tabs[0]
                 if (this.isYoutube(activeTab)) {
                     this.activeTab = {
-                        title: this.cleanTitle(activeTab),
+                        title: this.cleanTitle(activeTab.title),
                         youtubeId: this.getYoutubeId(activeTab),
                         playing: activeTab.audible,
                         url: activeTab.url,
@@ -319,7 +321,7 @@ export default {
             // eslint-disable-next-line no-undef
             chrome.bookmarks.create({
                 parentId: this.getSelectedFolderId(),
-                title: data.originalTitle,
+                title: this.cleanTitle(data.originalTitle),
                 url
             }, res => {
                 // eslint-disable-next-line no-undef
