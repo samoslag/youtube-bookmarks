@@ -24,7 +24,7 @@
         <Button
             v-if="notFound && !unbookmarked && canAdd"
             class="bookmark__replace-btn"
-            title="Replace bookamrk"
+            title="Replace bookmark"
             @click.stop="$emit('replace-bookmark')"
         >
             <Icon icon="sync"/>
@@ -144,9 +144,10 @@ export default {
         }
     }
     .bookmark__replace-btn {
-        left: 44px;
-        width: 32px;
-        height: 32px;
+        left: 43px;
+        width: 34px;
+        height: 34px;
+        border-radius: 50%;
         color: white;
         &:hover {
             background-color: #484b4e;
