@@ -237,6 +237,8 @@ export default {
                         url: activeTab.url,
                         originalTitle: activeTab.title
                     }
+                } else {
+                    this.activeTab = null
                 }
             })
         },
