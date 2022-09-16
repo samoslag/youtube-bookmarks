@@ -1,5 +1,5 @@
 # YouTube Bookmarks Chrome Extension
-Visualize your YouTube bookmarks.
+Better YouTube bookmarks.
 
 [Published on Chrome Web Store](https://chrome.google.com/webstore/detail/youtube-bookmarks/nlicfnjcbfjdhhocgbbkfghlolkdcfhg)
 
