@@ -85,53 +85,22 @@ export default {
     },
     computed: {
         list () {
-            let output = []
-            if (!this.filter) {
-                output = [ ...this.bookmarks ]
-                if (this.activeTab && !output.find(bookmark => bookmark.youtubeId === this.activeTab.youtubeId)) {
-                    output.unshift({
-                        ...this.activeTab,
-                        unbookmarked: true
-                    })
-                }
-            } else {
-                let filter = this.filter.toLowerCase().trim().split(" ")
-                let list = [ ...this.bookmarks ]
-                if (this.activeTab && !list.find(bookmark => bookmark.youtubeId === this.activeTab.youtubeId)) {
-                    list.unshift({
-                        ...this.activeTab,
-                        unbookmarked: true
-                    })
-                }
-                list = list.filter((item) => {
-                    let title = item.title.toLowerCase().trim().split(" ")
-                    let fullMatch = true
-                    
-                    for (let i = 0; i < filter.length; i++) {
-                        let match = false
-                        for (let j = 0; j < title.length; j++) {
-                            if (title[j].indexOf(filter[i]) > -1) {
-                                match = true
-                                title.splice(j, 1)
-                                break
-                            }
-                        }
-                        if (!match) {
-                            fullMatch = false
-                            break
-                        }
-                    }
-                    
-                    if (fullMatch) return item
-                })
+            const list = [ ...this.bookmarks ]
 
-                output = list
+            if (this.activeTab && !list.find(bookmark => bookmark.youtubeId === this.activeTab.youtubeId)) {
+                list.unshift({
+                    ...this.activeTab,
+                    unbookmarked: true
+                })
             }
 
-            return output
+            return list.filter(this.isSearched)
         },
         canAdd () {
             return this.list.find(item => item.unbookmarked) !== undefined 
+        },
+        filterQuery () {
+            return this.filter.toLowerCase().trim().split(" ")
         }
     },
     created () {
@@ -148,6 +117,18 @@ export default {
         this.removeListeners()
     },
     methods: {
+        isSearched ({ title }) {
+            const query = this.filterQuery
+            const target = title.toLowerCase().trim().split(" ")
+            
+            for (let i = 0; i < query.length; i++) {
+                const q = query[i]
+                const includes = target.some(t => t.includes(q))
+                if (!includes) return false
+            }
+                
+            return true
+        },
         getBookmarks () {
             // eslint-disable-next-line no-undef
             chrome.bookmarks.getTree((bookmarks) => {
