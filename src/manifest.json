@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "YouTube Bookmarks",
   "description": "Better YouTube bookmarks",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "icons": {
     "16": "icons/16.png",
     "19": "icons/19.png",
