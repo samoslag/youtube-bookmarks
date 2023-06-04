@@ -87,7 +87,7 @@ export default {
         list () {
             const list = [ ...this.bookmarks ]
 
-            if (this.activeTab && !list.find(bookmark => bookmark.youtubeId === this.activeTab.youtubeId)) {
+            if (this.canAdd) {
                 list.unshift({
                     ...this.activeTab,
                     unbookmarked: true
@@ -97,7 +97,7 @@ export default {
             return list.filter(this.isSearched)
         },
         canAdd () {
-            return this.list.find(item => item.unbookmarked) !== undefined 
+            return this.activeTab && !this.bookmarks.some(bookmark => bookmark.youtubeId === this.activeTab.youtubeId)
         },
         filterQuery () {
             return this.filter.toLowerCase().trim().split(" ")
