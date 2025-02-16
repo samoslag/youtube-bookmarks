@@ -1,31 +1,26 @@
-# YouTube Bookmarks Chrome Extension
-Better YouTube bookmarks.
+<div align="center">
+  <img src="https://github.com/samoslag/youtube-bookmarks/blob/master/public/icons/128.png?raw=true" alt="Logo" width="70"/>
+  
+  <h1>YouTube Bookmarks</h1>
+  <p>Browser extension for better YouTube bookmarks.</p>
+  
+  ### [Published on Chrome Web Store](https://chrome.google.com/webstore/detail/youtube-bookmarks/nlicfnjcbfjdhhocgbbkfghlolkdcfhg)
+  
+  <img src="https://github.com/samoslag/youtube-bookmarks/blob/master/Screenshots/1.png?raw=true" alt="Screenshot"/>
 
-[Published on Chrome Web Store](https://chrome.google.com/webstore/detail/youtube-bookmarks/nlicfnjcbfjdhhocgbbkfghlolkdcfhg)
+  <h3>Pin the extension for quick access</h3>
+  <img src="https://github.com/samoslag/youtube-bookmarks/blob/master/Screenshots/3.png?raw=true" alt="Pin"/>
+</div>
 
-## Development
-### Setup
+### Development
 ```
+# Install dependencies
 yarn install
-```
 
-### Run
-[Load Extension](#load-extension)
-```
-yarn watch
-```
-_**dist** will rebuild with every change you make._
+# Rebuild on change
+yarn warch
 
-### Build
-```
+# Build for production
 yarn build
 ```
-
-## Load Extension
-
-Open Chrome and go to **Manage extensions**. Toggle **Developer mode** at the top right corner to turn it on. Click on **Load unpacked** button and wait for the prompt. Find and select the **dist** folder and confirm.
-
-Once extension is loaded click the puzzle icon at the top right corner of Chrome (Extensions), then click the pin icon next to **YouTube Bookmarks** extension - this will pin the extension next to the puzzle icon so you can access it quickly.
-
-## Contribute
-If you have any bug reports or suggestions/requests regarding functionalities and user experience, be sure to let the creator know.
+Open **Manage extensions** in browser and turn on **Developer mode**. Click on **Load unpacked** and select **dist** folder.
