@@ -18,7 +18,7 @@
 yarn install
 
 # Rebuild on change
-yarn warch
+yarn watch
 
 # Build for production
 yarn build
