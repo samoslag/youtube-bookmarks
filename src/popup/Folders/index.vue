@@ -16,7 +16,7 @@
               v-for="item in folders"
               :key="item.id"
               :data="item"
-              :selected="selectedFolderFound ? selected : ''"
+              :selected="selected"
               :active="active"
               @set-active="active = $event; animationDirection = 'right'"
               @select="selectFolder($event)"
@@ -72,7 +72,7 @@ export default {
       if (activeFolder) {
         if (this.breadcrumbs.length <= 0) {
           output.push({
-            id: "",
+            id: "1",
             title: "Bookmarks bar"
           })
         }
@@ -92,21 +92,6 @@ export default {
       let folder = this.breadcrumbs[this.breadcrumbs.length - 1]
       if (!folder) folder = "Bookmarks"
       return "No folders to select in <b>" + folder + "</b>"
-    },
-    selectedFolderFound () {
-      const path = this.selected.split("-")
-      if (path.length > 0) {
-        let currentFolder = JSON.parse(JSON.stringify(this.allFolders))
-        for (let i = 0; i < path.length; i++) {
-          const nextFolderId = path[i]
-          let folder
-          try { folder = currentFolder.find(item => item.id === nextFolderId) }
-          catch { return false }
-          if (folder === undefined) return false
-          currentFolder = folder.children
-        }
-      }
-      return true
     }
   },
   created () {
@@ -129,8 +114,8 @@ export default {
       try {
           const data = [ ...bookmarks ]
           const all = data.find(item => item.id === "0").children
-          const folders = all.find(item => item.title.toLowerCase() === "bookmarks bar").children
-          return folders.filter(item => !item.url)
+          const folders = all.find(item => item.folderType === "bookmarks-bar").children
+          return folders.filter(item => !item.url && Boolean(item.children))
       // eslint-disable-next-line no-empty
       } catch {}
       return []

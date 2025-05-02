@@ -4,7 +4,7 @@
     :class="{
       'folders__folder-wrapper--highlight': isInSelected,
       'folders__folder-wrapper--selected': isSelected,
-      'folders__folder-wrapper--disabled': !hasId
+      'folders__folder-wrapper--disabled': isRoot
     }"
   >
     <button
@@ -12,7 +12,7 @@
       :title="'Open ' + data.title"
       @click="openFolder()"
     >
-      <Icon :icon="hasId ? 'folder' : 'bookmark'" class="folders__folder-icon-default"/>
+      <Icon :icon="!isRoot ? 'folder' : 'bookmark'" class="folders__folder-icon-default"/>
       <Icon v-if="isSelected" icon="check" class="folders__folder-icon-selected"/>
     </button>
     <button
@@ -44,8 +44,8 @@ export default {
       selected = selected[selected.length - 1]
       return id == selected
     },
-    hasId () {
-      return !!this.data.id
+    isRoot () {
+      return this.data.id === "1"
     }
   },
   methods: {
@@ -58,8 +58,8 @@ export default {
       this.$emit("select", id)
     },
     openFolder () {
+      if (this.isRoot) return
       const id = this.data.id
-      if (!this.hasId) return
       let active = this.active
       if (active) active += "-"
       active += id

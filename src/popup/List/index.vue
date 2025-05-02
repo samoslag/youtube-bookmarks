@@ -147,7 +147,7 @@ export default {
             try {
                 const data = [ ...bookmarks ]
                 const all = data.find(item => item.id === "0").children
-                const folders = all.find(item => item.title.toLowerCase() === "bookmarks bar").children
+                const folders = all.find(item => item.folderType === "bookmarks-bar").children
                 const selectedFolder = this.getSelectedFolder(folders)
                 let output = []
                 for (let i = 0; i < selectedFolder.length; i++) {
@@ -166,7 +166,10 @@ export default {
             return []
         },
         getSelectedFolder (folders) {
-            if (this.selectedFolder === "") return folders
+            if (this.selectedFolder === "1") {
+              this.selectedFolderTitle = "Bookmarks bar"
+              return folders
+            }
             
             let path = this.selectedFolder.split("-")
             if (path.length > 0) {
