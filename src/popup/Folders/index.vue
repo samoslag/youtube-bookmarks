@@ -1,6 +1,9 @@
 <template>
   <div class="folders">
-    <Head @close="close()"/>
+    <Head	
+      :can-close="Boolean(selected)"
+      @close="close()"
+    />
     <div class="folders__list">
       <transition name="breadcrumbs">
         <Breadcrumbs

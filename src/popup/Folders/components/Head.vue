@@ -1,7 +1,12 @@
 <template>
   <div class="folders__head">
     <span class="folders__title">Select folder</span>
-    <button class="folders__close" @click="$emit('close')" title="Cancel">
+    <button
+      v-if="canClose"
+      class="folders__close"
+      title="Cancel"
+      @click="$emit('close')"
+    >
       <Icon icon="times"/>
     </button>
   </div>
@@ -10,7 +15,10 @@
 <script>
 import Icon from "./../../components/Icon"
 export default {
-  components: { Icon }
+  components: { Icon },
+  props: {
+    canClose: { type: Boolean, default: true }
+  }
 }
 </script>
 

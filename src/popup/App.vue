@@ -1,17 +1,17 @@
 <template>
   <main v-if="loaded" class="app">
     <transition :name="'view-move-' + animationDirection">
-        <div class="app__view" :key="showFolders">
+        <div class="app__view" :key="view">
             <List
-                v-if="!showFolders"
+                v-if="view === 'list'"
                 :selectedFolder="selectedFolder"
-                @change-folder="showFolders = true; animationDirection = 'left'"
+                @change-folder="showFolders()"
             />
             <Folders
-                v-if="showFolders"
+                v-if="view === 'folders'"
                 v-model="selectedFolder"
                 @select="setSelectedFolder"
-                @close="showFolders = false; animationDirection = 'right'"
+                @close="showList()"
             />
         </div>
     </transition>
@@ -26,10 +26,15 @@ export default {
     data () {
         return {
             loaded: false,
-            showFolders: false,
             selectedFolder: "",
-            animationDirection: "right"
+            view: "list"
         }
+    },
+    computed: {
+      animationDirection () {
+        if (this.view === "folders") return "left"
+        return "right"
+      }
     },
     created () {
         // document.addEventListener('contextmenu', event => event.preventDefault())
@@ -42,7 +47,7 @@ export default {
                 if (res.selectedFolder !== undefined) {
                     this.selectedFolder = res.selectedFolder
                 } else {
-                    this.setSelectedFolder("")
+                    this.showFolders()
                 }
                 this.loaded = true
             })
@@ -50,6 +55,12 @@ export default {
         setSelectedFolder (value) {
             // eslint-disable-next-line no-undef
             chrome.storage.local.set({ selectedFolder: value })
+        },
+        showFolders () {
+          this.view = "folders"
+        },
+        showList () {
+          this.view = "list"
         }
     }
 }
