@@ -308,7 +308,15 @@ export default {
 
             if (offset) window.scroll({ top: offset, left: 0, behavior: "smooth" })
         },
-        addBookmark (index = 0) {
+        addBookmark () {
+          /**
+           * when adding to Bookmarks bar, new bookmark is placed at the end
+           * when adding to other folders, new bookmark is placed at the start
+           */
+          const isRootFolder = this.selectedFolder === "1"
+          this.createBookmark(isRootFolder ? undefined : 0)
+        },
+        createBookmark (index) {
             const data = this.activeTab
             let url = this.clearTimestamp(data.url)
             // eslint-disable-next-line no-undef
@@ -317,8 +325,12 @@ export default {
                 title: this.cleanTitle(data.originalTitle),
                 url
             }, res => {
-                // eslint-disable-next-line no-undef
-                chrome.bookmarks.move(res.id, { index }, () => { this.getBookmarks() })
+                if (index !== undefined) {
+                  // eslint-disable-next-line no-undef
+                  chrome.bookmarks.move(res.id, { index }, () => { this.getBookmarks() })
+                } else {
+                  this.getBookmarks()
+                }
             })
         },
         deleteBookmark (id) {
@@ -335,7 +347,7 @@ export default {
         },
         replaceBookmark (bookmark) {
             this.deleteBookmark(bookmark.id)
-            this.addBookmark(bookmark.index)
+            this.createBookmark(bookmark.index)
         },
         getSelectedFolderId () {
             if (this.selectedFolder) {
