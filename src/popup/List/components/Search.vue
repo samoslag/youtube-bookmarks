@@ -6,7 +6,7 @@
         title="Select folder"
     >
         <Icon icon="bars"/>
-        <span v-if="selectedFolderTitle">{{ selectedFolderTitle }}</span>
+        <span v-if="folderTitle">{{ folderTitle }}</span>
     </button>
     <div class="search__input-wrapper">
         <button
@@ -41,6 +41,12 @@ components: { Icon },
     props: {
         value: { type: String, default: "" },
         selectedFolderTitle: { type: String, default: "Bookmarks" }
+    },
+    computed: {
+      folderTitle () {
+        if (this.selectedFolderTitle === "Bookmarks bar") return ""
+        return this.selectedFolderTitle
+      }
     },
     mounted () {
         if (!this.$root._data.initSearchFocus) {
