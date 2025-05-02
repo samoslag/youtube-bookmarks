@@ -40,6 +40,7 @@ export default {
     font-weight: 400;
     padding: 0;
     margin: 0;
+    word-break: break-word;
     b {
       color: rgba(white, 0.6);
       font-weight: 400;
