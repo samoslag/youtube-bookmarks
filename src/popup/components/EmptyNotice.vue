@@ -19,7 +19,7 @@ import Button from "./Button"
 export default {
   components: { Button },
   props: {
-    text: { type: String, default: "Your YouTube bookmarks list is empty." },
+    text: { type: String, required: true },
     buttons: { type: Array, default: null }
   }
 }

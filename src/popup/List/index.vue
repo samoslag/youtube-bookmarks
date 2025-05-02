@@ -47,7 +47,7 @@
     </div>
     <EmptyNotice
         v-if="loaded && ((!bookmarks || bookmarks.length <= 0) || (list.length <= 0 && filter))"
-        :text="filter ? 'Search couldn\'t find any matching bookmarks.' : 'Your bookmarks list is empty.'"
+        :text="emptyNoticeText"
         :buttons="filter ? null : [{ text: 'Select folder', action: () => { $emit('change-folder') }}]"
     />
     <NotFoundAlert
@@ -101,6 +101,13 @@ export default {
         },
         filterQuery () {
             return this.filter.toLowerCase().trim().split(" ")
+        },
+        emptyNoticeText () {
+          if (this.filter) {
+            return "No matching bookmarks found. Try something else?"
+          }
+
+          return `No bookmarks in <b>${this.selectedFolderTitle || "this folder"}</b>`
         }
     },
     created () {
