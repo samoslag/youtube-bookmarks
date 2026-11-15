@@ -10,7 +10,8 @@
         }"
         :title="data.title"
         tabindex="-1"
-        @click="open()"
+        @click="onClick($event)"
+        @auxclick="onAuxClick($event)"
     >
         <Button
             v-if="unbookmarked && !notFound"
@@ -78,6 +79,20 @@ export default {
         }
     },
     methods: {
+        onClick (event) {
+          const isNewTab = event.ctrlKey || event.metaKey
+          if (isNewTab) {
+            this.openInNewTab(event)
+          } else {
+            this.open()
+          }
+        },
+        onAuxClick (event) {
+          const isNewTab = event.button === 1 // Middle mouse click
+          if (isNewTab) {
+            this.openInNewTab(event)
+          }
+        },
         open () {
             this.$emit("open")
             if (this.active) return
@@ -86,6 +101,14 @@ export default {
                 // eslint-disable-next-line no-undef
                 chrome.tabs.update({ active: true, url })
                 window.close()
+            }
+        },
+        openInNewTab (event) {
+            event.preventDefault()
+            const url = this.data.url
+            if (url) {
+                // eslint-disable-next-line no-undef
+                chrome.tabs.create({ active: false, url })
             }
         },
         checkValidity () {
