@@ -235,6 +235,9 @@ export default {
             overflow: hidden;
             font-weight: 500;
             user-select: none;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
         }
     }
     &--active {
