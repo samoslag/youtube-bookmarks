@@ -239,7 +239,7 @@ export default {
             const padding = 6
             const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)
             const offset = Math.ceil(index * itemHeight + padding - ((vh - headerHeight - itemHeight) / 2))
-            window.scroll({ top: offset, left: 0, behavior })
+            document.body.scroll({ top: offset, left: 0, behavior })
         },
         setListeners () {
             document.addEventListener("keydown", this.handleKey)
@@ -306,7 +306,7 @@ export default {
                 offset = itemOffset - (viewportHeight - itemHeight - headerHeight) - additionalOffset
             }
 
-            if (offset) window.scroll({ top: offset, left: 0, behavior: "smooth" })
+            if (offset) document.body.scroll({ top: offset, left: 0, behavior: "smooth" })
         },
         addBookmark () {
           /**

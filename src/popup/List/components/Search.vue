@@ -70,7 +70,7 @@ components: { Icon },
             }
         },
         emit (value) {
-            window.scroll({ top: 0, left: 0, behavior: "auto" })
+            document.body.scroll({ top: 0, left: 0, behavior: "auto" })
             this.$emit("input", value)
         }
     }
