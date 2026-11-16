@@ -350,9 +350,10 @@ export default {
             const index = this.notFound.indexOf(bookmark)
             this.notFound.splice(index, 1)
         },
-        replaceBookmark (bookmark) {
-            this.deleteBookmark(bookmark.id)
-            this.createBookmark(bookmark.index)
+        async replaceBookmark (bookmark) {
+            await this.deleteBookmark(bookmark.id)
+            await this.createBookmark(bookmark.index)
+            this.scrollToItem(bookmark.index, "auto")
         },
         getSelectedFolderId () {
             if (this.selectedFolder) {
