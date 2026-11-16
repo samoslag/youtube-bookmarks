@@ -198,6 +198,9 @@ export default {
     .folders-move-left-enter-active,
     .folders-move-left-leave-active {
       transition: transform 0.4s;
+      .folders__folder-wrapper {
+        pointer-events: none;
+      }
     }
     .folders-move-right-leave-active,
     .folders-move-left-leave-active {
