@@ -106,12 +106,12 @@ export default {
       this.active = this.selected
       this.goBack()
     },
-    getBookmarks () {
+    async getBookmarks () {
       // eslint-disable-next-line no-undef
-      chrome.bookmarks.getTree((bookmarks) => {
-          this.allFolders = this.getAllFolders(bookmarks)
-          this.loaded = true
-      })
+      const bookmarks = await chrome.bookmarks.getTree()
+      this.allFolders = this.getAllFolders(bookmarks)
+      this.loaded = true
+      return bookmarks
     },
     getAllFolders (bookmarks) {
       try {

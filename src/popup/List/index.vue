@@ -136,12 +136,12 @@ export default {
                 
             return true
         },
-        getBookmarks () {
-            // eslint-disable-next-line no-undef
-            chrome.bookmarks.getTree((bookmarks) => {
-                this.bookmarks = this.getYoutubeBookmarks(bookmarks)
-                this.loaded = true
-            })
+        async getBookmarks () {
+          // eslint-disable-next-line no-undef
+            const bookmarks = await chrome.bookmarks.getTree()
+            this.bookmarks = this.getYoutubeBookmarks(bookmarks)
+            this.loaded = true
+            return bookmarks
         },
         getYoutubeBookmarks (bookmarks) {
             try {
@@ -216,22 +216,22 @@ export default {
                 .trim()
                 .split(" - YouTube")[0]
         },
-        getActiveTab () {
+        async getActiveTab () {
             // eslint-disable-next-line no-undef
-            chrome.tabs.query({ currentWindow: true, active: true }, (tabs) => {
-                const activeTab = tabs[0]
-                if (this.isYoutube(activeTab)) {
-                    this.activeTab = {
-                        title: this.cleanTitle(activeTab.title),
-                        youtubeId: this.getYoutubeId(activeTab),
-                        playing: activeTab.audible,
-                        url: activeTab.url,
-                        originalTitle: activeTab.title
-                    }
-                } else {
-                    this.activeTab = null
+            const tabs = await chrome.tabs.query({ currentWindow: true, active: true })
+            const activeTab = tabs[0]
+            if (this.isYoutube(activeTab)) {
+                this.activeTab = {
+                    title: this.cleanTitle(activeTab.title),
+                    youtubeId: this.getYoutubeId(activeTab),
+                    playing: activeTab.audible,
+                    url: activeTab.url,
+                    originalTitle: activeTab.title
                 }
-            })
+            } else {
+                this.activeTab = null
+            }
+            return this.activeTab
         },
         scrollToItem (index, behavior = "smooth") {
             const itemHeight = 66
@@ -316,27 +316,32 @@ export default {
           const isRootFolder = this.selectedFolder === "1"
           this.createBookmark(isRootFolder ? undefined : 0)
         },
-        createBookmark (index) {
+        async createBookmark (index) {
             const data = this.activeTab
             let url = this.clearTimestamp(data.url)
+
             // eslint-disable-next-line no-undef
-            chrome.bookmarks.create({
+            const res = await chrome.bookmarks.create({
                 parentId: this.getSelectedFolderId(),
                 title: this.cleanTitle(data.originalTitle),
                 url
-            }, res => {
-                if (index !== undefined) {
-                  // eslint-disable-next-line no-undef
-                  chrome.bookmarks.move(res.id, { index }, () => { this.getBookmarks() })
-                } else {
-                  this.getBookmarks()
-                }
             })
+
+            if (index !== undefined) {
+                // eslint-disable-next-line no-undef
+                await chrome.bookmarks.move(res.id, { index })
+                await this.getBookmarks()
+            } else {
+                await this.getBookmarks()
+            }
+            return res
         },
-        deleteBookmark (id) {
+        async deleteBookmark (id) {
             // eslint-disable-next-line no-undef
-            chrome.bookmarks.remove(id, () => { this.getBookmarks() })
+            await chrome.bookmarks.remove(id)
             this.removeFromNotFound(id)
+            await this.getBookmarks()
+            return id
         },
         removeFromNotFound (id) {
             const bookmark = this.notFound.find(item => item.id === id)

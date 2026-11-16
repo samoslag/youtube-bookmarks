@@ -41,20 +41,20 @@ export default {
         this.getSelectedFolder()
     },
     methods: {
-        getSelectedFolder () {
+        async getSelectedFolder () {
             // eslint-disable-next-line no-undef
-            chrome.storage.local.get(['selectedFolder'], (res) =>  {
-                if (res.selectedFolder !== undefined) {
-                    this.selectedFolder = res.selectedFolder
-                } else {
-                    this.showFolders()
-                }
-                this.loaded = true
-            })
+            const res = await chrome.storage.local.get(['selectedFolder'])
+            if (res.selectedFolder !== undefined) {
+                this.selectedFolder = res.selectedFolder
+            } else {
+                this.showFolders()
+            }
+            this.loaded = true
+            return res
         },
-        setSelectedFolder (value) {
+        async setSelectedFolder (value) {
             // eslint-disable-next-line no-undef
-            chrome.storage.local.set({ selectedFolder: value })
+            return chrome.storage.local.set({ selectedFolder: value })
         },
         showFolders () {
           this.view = "folders"
