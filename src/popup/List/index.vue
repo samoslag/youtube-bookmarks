@@ -117,8 +117,8 @@ export default {
 
         // eslint-disable-next-line no-undef
         chrome.tabs.onUpdated.addListener(() => { this.getActiveTab() })
-        
-        window.GetList = () => { console.log(this.generateOutput()) }
+
+        window.download = this.download
     },
     beforeDestroy () {
         this.removeListeners()
@@ -368,24 +368,6 @@ export default {
             }
             return url
         },
-        generateOutput () {
-            const getDate = () => {
-                const now = new Date
-                let d = now.getDate()
-                if (d < 10) d = `0${d}`
-                let m = now.getMonth() + 1
-                if (m < 10) m = `0${m}`
-                const y = now.getFullYear()
-                return `${m}-${d}-${y}`
-            }
-            const getList = () => {
-                let list = ""
-                this.bookmarks.forEach(bookmark => { list += `\n\n${bookmark.title}\n${bookmark.url}` })
-                return list
-            }
-            const output = `Folder: ${this.selectedFolderTitle}\nDate: ${getDate()}\nCount: ${this.bookmarks.length}${getList()}`
-            return output
-        },
         addBookmarkToNotFound (bookmark) {
             if (!bookmark.id) return
 
@@ -395,7 +377,42 @@ export default {
         scrollToMissingItem (id) {
             const item = this.list.find(item => item.id === id)
             if (item) this.scrollToItem(this.list.indexOf(item))
-        }
+        },
+        download () {
+          const content = this.generateExport()
+          this.downloadTxt(content)
+        },
+        downloadTxt(content, filename = "bookmarks.txt") {
+            const blob = new Blob([content], {
+                type: "text/plain;charset=utf-8"
+            })
+            const url = URL.createObjectURL(blob)
+            const link = document.createElement("a")
+            link.href = url
+            link.download = filename
+            document.body.appendChild(link)
+            link.click()
+            document.body.removeChild(link)
+            URL.revokeObjectURL(url)
+        },
+        generateExport () {
+            const getDate = () => {
+                const now = new Date
+                let d = now.getDate()
+                if (d < 10) d = `0${d}`
+                let m = now.getMonth() + 1
+                if (m < 10) m = `0${m}`
+                const y = now.getFullYear()
+                return `${d}/${m}/${y}`
+            }
+            const getList = () => {
+                let list = ""
+                this.bookmarks.forEach(bookmark => { list += `\n\n${bookmark.title}\n${bookmark.url}` })
+                return list
+            }
+            const output = `Folder: ${this.selectedFolderTitle}\nDate: ${getDate()}\nCount: ${this.bookmarks.length}${getList()}`
+            return output
+        },
     }
 }
 </script>
