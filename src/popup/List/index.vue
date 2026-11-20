@@ -32,6 +32,8 @@
             :focused="focused === index"
             :unbookmarked="item.unbookmarked"
             :can-add="canAdd"
+            :can-move-up="index !== 0"
+            :can-move-down="index !== list.length - 1"
             @open="activeTab && activeTab.youtubeId === item.youtubeId ? scrollToItem(index) : false"
             @active="
                 scrollToItem(index, 'auto')
@@ -43,6 +45,11 @@
             @add-bookmark="addBookmark()"
             @replace-bookmark="replaceBookmark(item)"
             @not-found="addBookmarkToNotFound(item)"
+            @focus="focused = index"
+            @unfocus="focused = null"
+            @move-up="moveUp(item)"
+            @move-down="moveDown(item)"
+            @delete="deleteBookmark(item.id)"
         />
     </div>
     <EmptyNotice
@@ -377,6 +384,18 @@ export default {
         scrollToMissingItem (id) {
             const item = this.list.find(item => item.id === id)
             if (item) this.scrollToItem(this.list.indexOf(item))
+        },
+        async moveUp (item) {
+            const index = this.list[this.list.indexOf(item) - 1].index
+            // eslint-disable-next-line no-undef
+            await chrome.bookmarks.move(item.id, { index })
+            await this.getBookmarks()
+        },
+        async moveDown (item) {
+            const index = this.list[this.list.indexOf(item) + 1].index + 1
+            // eslint-disable-next-line no-undef
+            await chrome.bookmarks.move(item.id, { index })
+            await this.getBookmarks()
         },
         download () {
           const content = this.generateExport()

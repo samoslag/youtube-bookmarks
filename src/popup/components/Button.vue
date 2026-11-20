@@ -41,7 +41,7 @@ export default {
   }
   &:active {
     color: white;
-    background-color: #484b4e;
+    background-color: #47484b;
     transition: all 0.1s;
   }
   &--disabled {

@@ -65,7 +65,7 @@ export default {
     }
     &:active {
       cursor: pointer;
-      background:  #484b4e;
+      background:  #47484b;
       color: rgba(white, 0.95);
     }
   }

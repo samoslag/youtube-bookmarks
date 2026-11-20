@@ -144,7 +144,7 @@ components: { Icon },
                     transition: all 0.125s;
                     &::after {
                         transition: all 0.125s;
-                        background:  #484b4e;
+                        background:  #47484b;
                         opacity: 1;
                     }
                 }
@@ -221,8 +221,8 @@ components: { Icon },
         }
         &:active {
             cursor: pointer;
-            background: #484b4e;
-            border-color: #484b4e;
+            background: #47484b;
+            border-color: #47484b;
             svg {
                 color: rgba(white, 0.95);
             }

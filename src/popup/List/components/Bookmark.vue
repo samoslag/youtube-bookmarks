@@ -12,6 +12,7 @@
         tabindex="-1"
         @click="onClick($event)"
         @auxclick="onAuxClick($event)"
+        @contextmenu="onRightClick($event)"
     >
         <Button
             v-if="unbookmarked && !notFound"
@@ -62,7 +63,9 @@ export default {
         playing: { type: Boolean, default: false },
         focused: { type: Boolean, default: false },
         unbookmarked: { type: Boolean, default: false },
-        canAdd: { type: Boolean, default: false }
+        canAdd: { type: Boolean, default: false },
+        canMoveUp: { type: Boolean, default: false },
+        canMoveDown: { type: Boolean, default: false }
     },
     data () {
         return {
@@ -104,7 +107,7 @@ export default {
             }
         },
         openInNewTab (event) {
-            event.preventDefault()
+            if (event) event.preventDefault()
             const url = this.data.url
             if (url) {
                 // eslint-disable-next-line no-undef
@@ -117,6 +120,56 @@ export default {
                 this.notFound = true
                 this.$emit("not-found")
             }
+        },
+        onRightClick (event) {
+            if (this.unbookmarked) return
+
+            event.preventDefault()
+            this.$emit("focus")
+
+            const menuItems = [
+                {
+                    text: "Open in new tab",
+                    icon: "arrow-out",
+                    action: () => this.openInNewTab()
+                },
+                { type: "divider" },
+                {
+                    text: "Copy title",
+                    icon: "text",
+                    action: () => navigator.clipboard.writeText(this.data.title)
+                },
+                {
+                    text: "Copy link",
+                    icon: "link",
+                    action: () => navigator.clipboard.writeText(this.data.url)
+                },
+                ...(this.canMoveUp || this.canMoveDown ? [{ type: "divider" }] : []),
+                ...(!this.canMoveUp ? [] : [
+                    {
+                        text: "Move up",
+                        icon: "arrow-up",
+                        action: () => this.$emit("move-up")
+                    }
+                ]),
+                ...(!this.canMoveDown ? [] : [
+                    {
+                        text: "Move down",
+                        icon: "arrow-down",
+                        action: () => this.$emit("move-down")
+                    }
+                ]),
+                { type: "divider" },
+                {
+                    text: "Delete",
+                    icon: "trash",
+                    action: () => this.$emit("delete")
+                }
+            ]
+
+            const onMenuClose = () => { this.$emit("unfocus") }
+
+            this.$menu(event, menuItems, onMenuClose)
         }
     }
 }
@@ -173,10 +226,10 @@ export default {
         border-radius: 50%;
         color: white;
         &:hover {
-            background-color: #484b4e;
+            background-color: #47484b;
         }
         &:active {
-            background-color: lighten(#484b4e, 4%);
+            background-color: lighten(#47484b, 4%);
         }
     }
     .bookmark__content {
@@ -302,7 +355,7 @@ export default {
             }
             .bookmark__content {
                 &:active {
-                    background-color: #484b4e;
+                    background-color: #47484b;
                 }
             }
         }

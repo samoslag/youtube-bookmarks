@@ -98,7 +98,7 @@ export default {
       color: white;
     }
     &:active {
-      background-color: #484b4e;
+      background-color: #47484b;
       color: white;
     }
   }

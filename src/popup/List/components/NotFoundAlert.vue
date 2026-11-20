@@ -237,7 +237,7 @@ export default {
         }
         &:active {
           color: white;
-          background: #484b4e;
+          background: #47484b;
         }
       }
       .not-found-alert__item-delete-btn {
@@ -281,7 +281,7 @@ export default {
           transition: all 0.125s;
           &::after {
             transition: all 0.125s;
-            background: #484b4e;
+            background: #47484b;
             opacity: 1;
           }
         }
@@ -318,7 +318,7 @@ export default {
           }
         }
         &:active {
-          background: #484b4e;
+          background: #47484b;
           span {
             color: white;
           }
