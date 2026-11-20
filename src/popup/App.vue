@@ -37,7 +37,6 @@ export default {
       }
     },
     created () {
-        // document.addEventListener('contextmenu', event => event.preventDefault())
         this.getSelectedFolder()
     },
     methods: {
